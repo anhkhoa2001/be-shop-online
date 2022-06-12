@@ -23,6 +23,10 @@ public class CategoryModel extends AItemModel {
     @JoinColumn(name="cmID", nullable=false)
     private ProductLineModel productLineModel;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "manuID", referencedColumnName = "id")
+    private ManufacturerModel manufacturerModel;
+
     public Set<ProductModel> getProducts() {
         return productModels;
     }
