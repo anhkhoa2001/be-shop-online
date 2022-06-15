@@ -1,4 +1,4 @@
-package com.spring.contants.model;
+package com.spring.core.model;
 
 import javax.persistence.*;
 
@@ -8,16 +8,16 @@ public abstract class AItemModel {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Basic
     private String code;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(final int id) {
+    public void setId(final long id) {
         this.id = id;
     }
 

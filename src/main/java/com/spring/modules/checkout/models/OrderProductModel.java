@@ -1,6 +1,6 @@
 package com.spring.modules.checkout.models;
 
-import com.spring.contants.model.AItemModel;
+import com.spring.core.model.AItemModel;
 import com.spring.modules.category.model.CategoryModel;
 
 import javax.persistence.*;

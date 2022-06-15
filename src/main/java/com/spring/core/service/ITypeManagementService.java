@@ -1,7 +1,7 @@
-package com.spring.contants.service;
+package com.spring.core.service;
 
-import com.spring.contants.model.AItemModel;
-import com.spring.contants.repository.ITypeManagementJpaRepository;
+import com.spring.core.model.AItemModel;
+import com.spring.core.repository.ITypeManagementJpaRepository;
 
 import java.util.List;
 
@@ -15,6 +15,10 @@ public abstract class ITypeManagementService<T extends AItemModel, R extends ITy
 
     public List<T> getAll() {
         return getR().findAll();
+    }
+
+    public T findByCode(String code) {
+        return getR().findByCode(code);
     }
 
     public T getById(long id) {

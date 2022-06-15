@@ -1,29 +1,33 @@
-package com.spring.modules.product.models;
+package com.spring.modules.product.controllers.dto;
+
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "phonetab")
-public class PhoneTabModel extends ProductModel{
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
+@Schema(title = PhoneTabDTO.DTO_NAME, description = "Data transfer object for " + PhoneTabDTO.DTO_NAME)
+public class PhoneTabDTO extends ProductDTO {
 
-    @Basic
+    public static final String DTO_NAME = "PhoneTabDTO";
+
+    @Schema(example = "10.9\", IPS LCD")
     private String display;
 
-    @Basic
+    @Schema(example = "8 MP")
     private String frontCamera;
 
-    @Basic
+    @Schema(example = "8 MP")
     private String backCamera;
 
-    @Basic
+    @Schema(example = "Apple A13 Bionic")
     private String chip;
 
-    @Basic
+    @Schema(example = " 128 GB")
     private String memory;
 
-    @Basic
+    @Schema(example = "6 GB")
     private String ram;
 
     public String getDisplay() {

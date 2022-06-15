@@ -1,6 +1,6 @@
 package com.spring.modules.product.controllers.rest;
 
-import com.spring.contants.controller.rest.ATypeManagementRestController;
+import com.spring.core.controller.rest.ATypeManagementRestController;
 import com.spring.modules.product.models.ProductModel;
 import com.spring.modules.product.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

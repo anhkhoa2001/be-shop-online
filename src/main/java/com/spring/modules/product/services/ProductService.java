@@ -1,6 +1,6 @@
 package com.spring.modules.product.services;
 
-import com.spring.contants.service.ITypeManagementService;
+import com.spring.core.service.ITypeManagementService;
 import com.spring.modules.product.models.ProductModel;
 import com.spring.modules.product.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

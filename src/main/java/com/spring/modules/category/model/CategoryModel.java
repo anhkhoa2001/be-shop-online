@@ -1,6 +1,6 @@
 package com.spring.modules.category.model;
 
-import com.spring.contants.model.AItemModel;
+import com.spring.core.model.AItemModel;
 import com.spring.modules.product.models.ProductModel;
 
 import javax.persistence.*;

@@ -1,5 +1,5 @@
 package com.spring.modules.product.models;
-import com.spring.contants.model.AItemModel;
+import com.spring.core.model.AItemModel;
 import com.spring.modules.category.model.CategoryModel;
 
 import javax.persistence.*;
