@@ -4,8 +4,6 @@ package com.spring.modules.product.controllers.dto;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.persistence.Basic;
-
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
 @Schema(title = PhoneTabDTO.DTO_NAME, description = "Data transfer object for " + PhoneTabDTO.DTO_NAME)
 public class PhoneTabDTO extends ProductDTO {
@@ -76,5 +74,9 @@ public class PhoneTabDTO extends ProductDTO {
 
     public void setRam(final String ram) {
         this.ram = ram;
+    }
+
+    public PhoneTabDTO() {
+        super.setType(PhoneTabDTO.DTO_NAME);
     }
 }

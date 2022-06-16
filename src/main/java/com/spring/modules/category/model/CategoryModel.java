@@ -10,8 +10,10 @@ import java.util.Set;
 @Table(name="category")
 public class CategoryModel extends AItemModel {
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy= "categoryModel")
-    private Set<ProductModel> productModels;
+    public static final String MODEL_NAME = "Category";
+
+    @OneToMany(mappedBy="category")
+    private Set<ProductModel> products;
 
     @Basic
     private String line;
@@ -19,21 +21,16 @@ public class CategoryModel extends AItemModel {
     @Basic
     private String logo;
 
-    @ManyToOne
+    @Basic
+    private String categoryCode;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="cmID", nullable=false)
-    private ProductLineModel productLineModel;
+    private ProductLineModel productLine;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "manuID", referencedColumnName = "id")
-    private ManufacturerModel manufacturerModel;
-
-    public Set<ProductModel> getProducts() {
-        return productModels;
-    }
-
-    public void setProducts(final Set<ProductModel> productModels) {
-        this.productModels = productModels;
-    }
+    private ManufacturerModel manufacturer;
 
     public String getLine() {
         return line;
@@ -52,10 +49,34 @@ public class CategoryModel extends AItemModel {
     }
 
     public ProductLineModel getProductLine() {
-        return productLineModel;
+        return productLine;
     }
 
-    public void setProductLine(final ProductLineModel productLineModel) {
-        this.productLineModel = productLineModel;
+    public void setProductLine(final ProductLineModel productLine) {
+        this.productLine = productLine;
+    }
+
+    public ManufacturerModel getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(final ManufacturerModel manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public Set<ProductModel> getProducts() {
+        return products;
+    }
+
+    public void setProducts(final Set<ProductModel> products) {
+        this.products = products;
+    }
+
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    public void setCategoryCode(final String categoryCode) {
+        this.categoryCode = categoryCode;
     }
 }

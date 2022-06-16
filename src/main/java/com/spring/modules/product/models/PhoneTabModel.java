@@ -8,6 +8,8 @@ import javax.persistence.Table;
 @Table(name = "phonetab")
 public class PhoneTabModel extends ProductModel{
 
+    public static final String MODEL_NAME = "PhoneTab";
+
     @Basic
     private String display;
 

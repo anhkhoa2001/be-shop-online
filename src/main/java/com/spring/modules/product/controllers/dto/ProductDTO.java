@@ -2,8 +2,13 @@ package com.spring.modules.product.controllers.dto;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.spring.core.controller.dto.AItemDTO;
+import com.spring.modules.category.controller.dtos.CategoryDTO;
+import com.spring.modules.category.controller.dtos.ProductLineDTO;
 import com.spring.modules.category.model.CategoryModel;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
 @Schema(title = ProductDTO.DTO_NAME, description = "Data transfer object for " + ProductDTO.DTO_NAME)
@@ -25,6 +30,14 @@ public class ProductDTO extends AItemDTO {
 
     @Schema(example = "/image/image.png", required = true)
     private String image;
+
+    @ManyToOne
+    @JoinColumn(name="cid", nullable=false)
+    private CategoryDTO categoryDTO;
+
+    public ProductDTO() {
+        this.setType(ProductLineDTO.DTO_NAME);
+    }
 
     public String getType() {
         return type;
@@ -64,5 +77,13 @@ public class ProductDTO extends AItemDTO {
 
     public void setImage(final String image) {
         this.image = image;
+    }
+
+    public CategoryDTO getCategoryDTO() {
+        return categoryDTO;
+    }
+
+    public void setCategoryDTO(final CategoryDTO categoryDTO) {
+        this.categoryDTO = categoryDTO;
     }
 }

@@ -9,6 +9,8 @@ import java.util.Set;
 @Table(name="productline")
 public class ProductLineModel extends AItemModel {
 
+    public static final String MODEL_NAME = "ProductLine";
+
     @Basic
     private String icon;
 
@@ -21,7 +23,7 @@ public class ProductLineModel extends AItemModel {
     @Basic
     private String slogan;
 
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy= "productLineModel")
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy= "productLine")
     private Set<CategoryModel> categories;
 
     public String getIcon() {

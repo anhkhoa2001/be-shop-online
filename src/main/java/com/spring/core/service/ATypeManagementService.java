@@ -2,14 +2,15 @@ package com.spring.core.service;
 
 import com.spring.core.model.AItemModel;
 import com.spring.core.repository.ITypeManagementJpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public abstract class ITypeManagementService<T extends AItemModel, R extends ITypeManagementJpaRepository<T>> {
+public abstract class ATypeManagementService<T extends AItemModel> {
 
-    private final R r;
+    private final ITypeManagementJpaRepository<T> r;
 
-    public ITypeManagementService(final R r) {
+    public ATypeManagementService(final ITypeManagementJpaRepository<T> r) {
         this.r = r;
     }
 
@@ -25,25 +26,19 @@ public abstract class ITypeManagementService<T extends AItemModel, R extends ITy
         return getR().findById(id).get();
     }
 
-    public boolean create(T t) {
-        int before = getAll().size();
+    public void create(T t) {
         getR().save(t);
-        int last = getAll().size();
-        return before < last;
     }
 
     public void update(T t) {
         getR().save(t);
     }
 
-    public boolean deleteById(long id) {
-        int before = getAll().size();
+    public void deleteById(long id) {
         getR().deleteById(id);
-        int last = getAll().size();
-        return before > last;
     }
 
-    public R getR() {
+    public ITypeManagementJpaRepository<T> getR() {
         return r;
     }
 }

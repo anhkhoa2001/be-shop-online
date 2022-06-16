@@ -5,6 +5,8 @@ import javax.persistence.*;
 @MappedSuperclass
 public abstract class AItemModel {
 
+    public static final String MODEL_NAME = "AItem";
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)

@@ -2,20 +2,16 @@ package com.spring.modules.category.model;
 
 import com.spring.core.model.AItemModel;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "manu")
 public class ManufacturerModel extends AItemModel {
 
-    @Basic
-    private String name;
+    public static final String MODEL_NAME = "Manufacturer";
 
-    @OneToOne(mappedBy = "manufacturerModel")
-    private CategoryModel categoryModel;
+    @Column(unique = true, name = "name")
+    private String name;
 
     public String getName() {
         return name;
@@ -25,11 +21,10 @@ public class ManufacturerModel extends AItemModel {
         this.name = name;
     }
 
-    public CategoryModel getCategoryModel() {
-        return categoryModel;
-    }
-
-    public void setCategoryModel(final CategoryModel categoryModel) {
-        this.categoryModel = categoryModel;
+    @Override
+    public String toString() {
+        return "ManufacturerModel{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

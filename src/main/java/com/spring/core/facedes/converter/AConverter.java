@@ -1,37 +1,31 @@
-package com.spring.core.facedes.converter.dto2model;
+package com.spring.core.facedes.converter;
 
-import com.spring.core.controller.dto.AItemDTO;
-import com.spring.core.facedes.converter.AConverter;
-import com.spring.core.model.AItemModel;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class ADTO2ModelConverter<SOURCE extends AItemDTO, TARGET extends AItemModel> {
+public abstract class AConverter<SOURCE, TARGET> {
 
-    TARGET target;
+    private TARGET target;
 
-    public ADTO2ModelConverter(final TARGET target) {
+    public AConverter(final TARGET target) {
+        this.target = target;
+    }
+
+    public TARGET getTarget() {
+        return target;
+    }
+
+    public void setTarget(final TARGET target) {
         this.target = target;
     }
 
     public TARGET convert(SOURCE source) {
-        TARGET target = this.target;
-        try {
-            if(!StringUtils.isBlank(source.getCode())) {
-                target.setCode(source.getCode());
-            }
-            target.setId(source.getId());
-        } catch (Exception e) {
-            e.printStackTrace();
+        synchronized (source) {
+            System.out.println(source.toString());
+            return null;
         }
-
-        return target;
     }
 
     public List<TARGET> convertAll(List<SOURCE> sourceList) {

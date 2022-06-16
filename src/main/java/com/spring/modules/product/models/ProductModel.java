@@ -6,7 +6,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "product")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class ProductModel extends AItemModel {
+
+    public static final String MODEL_NAME = "Product";
 
     @Basic
     private String name;
@@ -20,9 +23,9 @@ public class ProductModel extends AItemModel {
     @Basic
     private String image;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="cid", nullable=false)
-    private CategoryModel categoryModel;
+    private CategoryModel category;
 
     public String getName() {
         return name;
@@ -57,10 +60,10 @@ public class ProductModel extends AItemModel {
     }
 
     public CategoryModel getCategory() {
-        return categoryModel;
+        return category;
     }
 
-    public void setCategory(final CategoryModel categoryModel) {
-        this.categoryModel = categoryModel;
+    public void setCategory(final CategoryModel category) {
+        this.category = category;
     }
 }

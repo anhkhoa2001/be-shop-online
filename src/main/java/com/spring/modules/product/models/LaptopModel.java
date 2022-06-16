@@ -1,12 +1,12 @@
 package com.spring.modules.product.models;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "laptop")
-public class LaptopModel extends ProductModel{
+public class LaptopModel extends ProductModel {
+
+    public static final String MODEL_NAME = "Laptop";
 
     @Basic
     private String display;
