@@ -1,29 +1,49 @@
 package com.spring.modules.product.facades.converts.dto2model;
 
-import com.spring.core.facedes.converter.dto2model.ADTO2ModelConverter;
+import com.spring.core.facades.converter.dto2model.ADTO2ModelConverter;
+import com.spring.modules.category.facades.converters.dto2model.CategoryDTO2CategoryModelConverter;
 import com.spring.modules.product.controllers.dto.PhoneTabDTO;
 import com.spring.modules.product.models.PhoneTabModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Objects;
 
 @Component
 public class PhoneTabDTO2PhoneTabModelConverter extends ADTO2ModelConverter<PhoneTabDTO, PhoneTabModel> {
 
-    private final ProductDTO2ProductModelConverter productDTO2ProductModel;
+    private final CategoryDTO2CategoryModelConverter categoryDTO2CategoryModel;
 
     @Autowired
-    public PhoneTabDTO2PhoneTabModelConverter(final ProductDTO2ProductModelConverter productDTO2ProductModel) {
+    public PhoneTabDTO2PhoneTabModelConverter(final CategoryDTO2CategoryModelConverter categoryDTO2CategoryModel) {
         super(new PhoneTabModel());
-        this.productDTO2ProductModel = productDTO2ProductModel;
+        this.categoryDTO2CategoryModel = categoryDTO2CategoryModel;
     }
 
     @Override
     public PhoneTabModel convert(PhoneTabDTO phoneTabDTO) {
         if(Objects.nonNull(phoneTabDTO)) {
-            final PhoneTabModel phoneTab = (PhoneTabModel) getProductDTO2ProductModel().convert(phoneTabDTO);
+            final PhoneTabModel phoneTab = new PhoneTabModel();
+            phoneTab.setCode(phoneTabDTO.getCode());
+            phoneTab.setId(phoneTabDTO.getId());
+            phoneTab.setName(phoneTabDTO.getName());
+            phoneTab.setQuantityStock(phoneTabDTO.getQuantityStock());
+
+            if(!StringUtils.isBlank(phoneTabDTO.getImage())) {
+                phoneTab.setImage(phoneTabDTO.getImage());
+            }
+            if(!StringUtils.isBlank(phoneTabDTO.getName())) {
+                phoneTab.setName(phoneTabDTO.getName());
+            }
+
+            if(Objects.nonNull(phoneTabDTO.getCategoryDTO())) {
+                phoneTab.setCategory(getCategoryDTO2CategoryModel().convert(phoneTabDTO.getCategoryDTO()));
+                phoneTab.getCategory().setProducts(Collections.emptySet());
+            }
+            phoneTab.setPrice(phoneTabDTO.getPrice());
+
             if(!StringUtils.isBlank(phoneTabDTO.getChip())) {
                 phoneTab.setChip(phoneTabDTO.getChip());
             }
@@ -48,7 +68,7 @@ public class PhoneTabDTO2PhoneTabModelConverter extends ADTO2ModelConverter<Phon
         return null;
     }
 
-    public ProductDTO2ProductModelConverter getProductDTO2ProductModel() {
-        return productDTO2ProductModel;
+    public CategoryDTO2CategoryModelConverter getCategoryDTO2CategoryModel() {
+        return categoryDTO2CategoryModel;
     }
 }

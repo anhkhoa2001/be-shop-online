@@ -66,4 +66,15 @@ public class ProductModel extends AItemModel {
     public void setCategory(final CategoryModel category) {
         this.category = category;
     }
+
+    @Override
+    public String toString() {
+        return "ProductModel{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", quantityStock=" + quantityStock +
+                ", image='" + image + '\'' +
+                ", category=" + category +
+                '}';
+    }
 }

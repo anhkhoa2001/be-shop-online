@@ -1,7 +1,7 @@
 package com.spring.modules.product.facades.converts.model2dto;
 
-import com.spring.core.facedes.converter.model2dto.AModel2DTOConverter;
-import com.spring.modules.category.facades.model2dto.CategoryModel2CategoryDTOConverter;
+import com.spring.core.facades.converter.model2dto.AModel2DTOConverter;
+import com.spring.modules.category.facades.converters.dto2model.model2dto.CategoryModel2CategoryDTOConverter;
 import com.spring.modules.product.controllers.dto.ProductDTO;
 import com.spring.modules.product.models.ProductModel;
 import org.apache.commons.lang3.StringUtils;

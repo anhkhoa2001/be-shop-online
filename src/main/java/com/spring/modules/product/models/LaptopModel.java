@@ -84,4 +84,9 @@ public class LaptopModel extends ProductModel {
     public void setSize(final String size) {
         this.size = size;
     }
+
+    @Override
+    public String toString() {
+        return "LaptopModel{} " + super.toString();
+    }
 }

@@ -1,8 +1,8 @@
 package com.spring.modules.category.facades.imps;
 
-import com.spring.core.facedes.converter.dto2model.ADTO2ModelConverter;
-import com.spring.core.facedes.converter.model2dto.AModel2DTOConverter;
-import com.spring.core.facedes.impls.ATypeManagementFacade;
+import com.spring.core.facades.converter.dto2model.ADTO2ModelConverter;
+import com.spring.core.facades.converter.model2dto.AModel2DTOConverter;
+import com.spring.core.facades.impls.ATypeManagementFacade;
 import com.spring.modules.category.controller.dtos.ProductLineDTO;
 import com.spring.modules.category.model.ProductLineModel;
 import com.spring.modules.category.service.ProductLineService;

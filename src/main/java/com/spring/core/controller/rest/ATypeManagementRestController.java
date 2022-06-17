@@ -1,7 +1,7 @@
 package com.spring.core.controller.rest;
 
 import com.spring.core.controller.dto.AItemDTO;
-import com.spring.core.facedes.impls.ATypeManagementFacade;
+import com.spring.core.facades.impls.ATypeManagementFacade;
 import com.spring.core.model.AItemModel;
 import com.spring.core.response.EResponse;
 import com.spring.core.service.ATypeManagementService;
@@ -10,8 +10,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,14 +30,7 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
 
     @Operation(
             summary = "Create the entity.",
-            description = "Create a new entity in the backend",
-            responses = {@ApiResponse(
-                    responseCode = "201",
-                    description = "Entity successfully created."
-            ), @ApiResponse(
-                    responseCode = "409",
-                    description = "Cannot create the entity."
-            )}
+            description = "Create a new entity in the backend"
     )
     @PostMapping(
             consumes = {"application/json"},
@@ -47,6 +42,7 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
                 String code = getFacade().generatorCode(MODEL.MODEL_NAME);
                 entity.setCode(code);
             }
+
             DTO dtoCreated = getFacade().create(entity);
 
             return dtoCreated;
@@ -57,19 +53,16 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
 
     @Operation(
             summary = "Get all entity.",
-            description = "Get all list entity in the backend",
-            responses = {@ApiResponse(
-                    responseCode = "201",
-                    description = "List entity successfully return."
-            ), @ApiResponse(
-                    responseCode = "409",
-                    description = "Cannot get list entity."
-            )}
+            description = "Get all list entity in the backend"
     )
     @GetMapping
     public List<DTO> getAll() {
         try {
-            return getFacade().getAll();
+            if(CollectionUtils.isEmpty(getFacade().getAll())) {
+                return Collections.emptyList();
+            } else {
+                return getFacade().getAll();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

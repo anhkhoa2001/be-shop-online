@@ -85,4 +85,8 @@ public class LaptopDTO extends ProductDTO {
     public void setSize(final String size) {
         this.size = size;
     }
+
+    public LaptopDTO() {
+        super.setType(LaptopDTO.DTO_NAME);
+    }
 }

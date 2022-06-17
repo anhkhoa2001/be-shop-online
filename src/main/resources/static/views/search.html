@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="../resources/css/search.css" />
+    <link rel="stylesheet" href="../resources/css/all.min.css" />
+</head>
+<body>
+<!-- Header -->
+<header id="header" class="header">
+    <div class="navigation" th:insert="header.html"></div>
+    <div class="page__title-area">
+        <div class="container">
+            <div class="page__title-container">
+                <ul class="page__titles">
+                    <li>
+                        <a href="/home">
+                            <svg>
+                                <use xlink:href="../resources/images/sprite.svg#icon-home" ></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="page__title">Search</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id = "main">
+    <div class = "main-grid">
+        <div class = "search">
+            <input type="text" name = "search">
+        </div>
+        <div class = "products">
+            <ul id = "list-product">
+
+            </ul>
+        </div>
+    </div>
+</main>
+<footer id="footer" class="section footer" th:insert="footer.html"></footer>
+</body>
+<script src="../resources/js/search.js" ></script>
+</html>

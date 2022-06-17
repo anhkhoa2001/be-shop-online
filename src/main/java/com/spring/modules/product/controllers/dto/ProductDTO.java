@@ -59,6 +59,10 @@ public class ProductDTO extends AItemDTO {
         return price;
     }
 
+    public String getPriceDola() {
+        return price/22 + "$";
+    }
+
     public void setPrice(final long price) {
         this.price = price;
     }
