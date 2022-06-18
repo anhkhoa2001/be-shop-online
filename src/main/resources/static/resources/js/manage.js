@@ -1,6 +1,5 @@
 //////////////////////////////////////////////////////////
 ////////////////DASHBOARD//////////////////////////////////
-
 fetch("/myspring/apimanage/chart?number=one", {
     method: 'GET',
 }).then(resp => {
@@ -59,6 +58,8 @@ fetch("/myspring/apimanage/chart?number=two", {
     }
 });
 });
+
+
 
 fetch("/myspring/apimanage/table/one", {
     method: 'GET',

@@ -18,7 +18,7 @@ public class PhoneTabService extends ATypeManagementService<PhoneTabModel> {
         super(phoneTabRepository);
     }
 
-    public List<PhoneTabModel> getByCmID(final int cmID) {
+    public List<PhoneTabModel> getByCmID(final long cmID) {
         List<PhoneTabModel> phoneTabs = new ArrayList<>();
 
         getAll().forEach(e -> {
@@ -29,7 +29,7 @@ public class PhoneTabService extends ATypeManagementService<PhoneTabModel> {
         return phoneTabs;
     }
 
-    public List<PhoneTabModel> getByCID(final int cID) {
+    public List<PhoneTabModel> getByCID(final long cID) {
         List<PhoneTabModel> phoneTabs = new ArrayList<>();
 
         getAll().forEach(e -> {

@@ -26,7 +26,7 @@ public class PhoneTabFacade extends ATypeManagementFacade<PhoneTabDTO, PhoneTabM
         super(service, dto2model, model2dto);
     }
 
-    public List<PhoneTabDTO> getByCmID(final int cmID) {
+    public List<PhoneTabDTO> getByCmID(final long cmID) {
         try {
             if(CollectionUtils.isEmpty(getService().getByCmID(cmID))) {
                 return Collections.emptyList();
@@ -39,7 +39,7 @@ public class PhoneTabFacade extends ATypeManagementFacade<PhoneTabDTO, PhoneTabM
         return Collections.emptyList();
     }
 
-    public List<PhoneTabDTO> getByCID(final int cID) {
+    public List<PhoneTabDTO> getByCID(final long cID) {
         try {
             if(CollectionUtils.isEmpty(getService().getByCID(cID))) {
                 return Collections.emptyList();
@@ -52,41 +52,40 @@ public class PhoneTabFacade extends ATypeManagementFacade<PhoneTabDTO, PhoneTabM
         return Collections.emptyList();
     }
 
-    public List<PhoneTabDTO> getByCountAndType(int count, String type, Model model) {
+    public List<PhoneTabDTO> getByCountAndTypeAndCmID(int count, String type, long cmID, Model model) {
         List<PhoneTabModel> phoneTabsInDB = getService().getAll();
-        List<PhoneTabModel> phoneTabs = new ArrayList<>();
-        for(PhoneTabModel p:phoneTabsInDB) {
-            if(p.getCategory().getProductLine().getId() == 1) {
-                phoneTabs.add(p);
+        List<PhoneTabDTO> phoneTabs = getByCmID(cmID);
+
+        if(count > 0) {
+            if(type.equals("desc")) {
+                Collections.sort(phoneTabs, new Comparator<PhoneTabDTO>() {
+                    @Override
+                    public int compare(PhoneTabDTO p1, PhoneTabDTO p2) {
+                        return Long.compare(p2.getPrice(), p1.getPrice());
+                    }
+                });
+            } else {
+                Collections.sort(phoneTabs, new Comparator<PhoneTabDTO>() {
+                    @Override
+                    public int compare(PhoneTabDTO p1, PhoneTabDTO p2) {
+                        return Long.compare(p1.getPrice(), p2.getPrice());
+                    }
+                });
+            }
+
+            return phoneTabs.subList(0, count);
+        } else {
+            if(phoneTabs.size() > EResponse.COUNT_PRODUCT_LOAD) {
+                model.addAttribute("loadmore", true);
+                return phoneTabs.subList(0, EResponse.COUNT_PRODUCT_LOAD);
+            } else {
+                return phoneTabs;
             }
         }
 
-        if(type.equals("desc")) {
-            Collections.sort(phoneTabs, new Comparator<PhoneTabModel>() {
-                @Override
-                public int compare(PhoneTabModel p1, PhoneTabModel p2) {
-                    return Long.compare(p2.getPrice(), p1.getPrice());
-                }
-            });
-        } else {
-            Collections.sort(phoneTabs, new Comparator<PhoneTabModel>() {
-                @Override
-                public int compare(PhoneTabModel p1, PhoneTabModel p2) {
-                    return Long.compare(p1.getPrice(), p2.getPrice());
-                }
-            });
-        }
-
-        phoneTabs = phoneTabs.subList(0, count);
-
-        if(phoneTabs.size() > EResponse.COUNT_PRODUCT_LOAD) {
-            return getModel2dto().convertAll(phoneTabs.subList(0, EResponse.COUNT_PRODUCT_LOAD));
-        } else {
-            return getModel2dto().convertAll(phoneTabs);
-        }
     }
 
-    public List<PhoneTabDTO> filterPhoneTab(JSONObject json, int cmID) {
+    public List<PhoneTabDTO> filterPhoneTab(JSONObject json, long cmID) {
         List<PhoneTabDTO> list = new ArrayList<>();
         JSONArray ids = (JSONArray) json.get("id");
         int top = ((Long) json.get("top")).intValue();
@@ -101,7 +100,7 @@ public class PhoneTabFacade extends ATypeManagementFacade<PhoneTabDTO, PhoneTabM
                 list.addAll(list2);
             } else {
                 for (Object o : ids) {
-                    List<PhoneTabDTO> list2 = getByCID((int) o);
+                    List<PhoneTabDTO> list2 = getByCID((long) o);
                     list.addAll(list2);
                 }
             }

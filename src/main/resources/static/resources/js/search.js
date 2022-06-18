@@ -17,7 +17,7 @@ function getData(data, key) {
 					+ "	                    <img src=\""+ d.image +"\" alt=\"product\">\r\n"
 					+ "	                </div>\r\n"
 					+ "	                <div class=\"product__footer\">\r\n"
-					+ "	                    <h3>Laptop Asus ZenBook Flip UX363EA</h3>\r\n"
+					+ "	                    <h3>"+ d.name +"</h3>\r\n"
 					+ "	                    <div class=\"rating\">\r\n"
 					+ "	                        <svg>\r\n"
 					+ "	                            <use xlink:href=\"<c:url value=\"/resources/images/sprite.svg#icon-star-full\" />\"></use>\r\n"
@@ -38,7 +38,7 @@ function getData(data, key) {
 					+ "	                    <div class=\"product__price\">\r\n"
 					+ "	                        <h4>$"+ d.priceDola +"</h4>\r\n"
 					+ "	                    </div>\r\n"
-					+ "	                    <a href=\"/myspring/home/product/details?code="+ d.code +"\"><button type=\"submit\" class=\"product__btn\">SHOP NOW</button></a>\r\n"
+					+ "	                    <a href=\"/home/product-detail?code="+ d.code +"\"><button type=\"submit\" class=\"product__btn\">SHOP NOW</button></a>\r\n"
 					+ "	                </div>\r\n"
 					+ "	            </li>";
 	}

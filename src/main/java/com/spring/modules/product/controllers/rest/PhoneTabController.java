@@ -1,6 +1,7 @@
 package com.spring.modules.product.controllers.rest;
 
 import com.spring.core.controller.rest.ATypeManagementRestController;
+import com.spring.core.response.EResponse;
 import com.spring.modules.product.controllers.dto.PhoneTabDTO;
 import com.spring.modules.product.facades.impls.PhoneTabFacade;
 import com.spring.modules.product.models.PhoneTabModel;
@@ -26,19 +27,37 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
     }
 
     @Operation(
-            summary = "Get list phonetab by count and type.",
-            description = "Get list phonetab by count and type in the backend"
+            summary = "Get list phone by count and type.",
+            description = "Get list phone by count and type in the backend"
     )
-    @GetMapping("/get-by")
-    public List<PhoneTabDTO> getByCountAndType(@RequestParam int count, @RequestParam String type, Model model) {
+    @GetMapping("/phone/get-by")
+    public List<PhoneTabDTO> getPhoneByCountAndType(@RequestParam int count, @RequestParam String type, Model model) {
         try {
-            return getFacade().getByCountAndType(count, type, model);
+            return getFacade().getByCountAndTypeAndCmID(count, type, EResponse.CMID_PHONE, model);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return Collections.emptyList();
     }
 
+    @Operation(
+            summary = "Get list tablet by count and type.",
+            description = "Get list tablet by count and type in the backend"
+    )
+    @GetMapping("/tablet/get-by")
+    public List<PhoneTabDTO> getTabletByCountAndType(@RequestParam int count, @RequestParam String type, Model model) {
+        try {
+            return getFacade().getByCountAndTypeAndCmID(count, type, EResponse.CMID_TABLET, model);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    @Operation(
+            summary = "Get list phone by attribute in request body.",
+            description = "Get list tablet by attribute in request body in the backend"
+    )
     @PutMapping(value = "/phone")
     @ResponseBody
     public List<PhoneTabDTO> homePutPhoneTab(HttpServletRequest request, @RequestBody String data) {
@@ -63,13 +82,17 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
         return Collections.emptyList();
     }
 
+    @Operation(
+            summary = "Get size list phone by attribute in request body.",
+            description = "Get size list phone by attribute in request body in the backend"
+    )
     @PutMapping(value = "/phone/size")
     @ResponseBody
     public int sizePhone(HttpServletRequest request, @RequestBody String data) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(data);
-            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, 1);
+            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, EResponse.CMID_PHONE);
 
             return list3.size();
         } catch (ParseException e) {
@@ -79,13 +102,17 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
         return 0;
     }
 
+    @Operation(
+            summary = "Get list tablet by attribute in request body.",
+            description = "Get list tablet by attribute in request body in the backend"
+    )
     @PutMapping(value = "/tablet")
     @ResponseBody
     public List<PhoneTabDTO> homePutTablet(HttpServletRequest request, @RequestBody String data, Model model) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(data);
-            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, 2);
+            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, EResponse.CMID_TABLET);
             int count = ((Long) json.get("count")).intValue();
             if(list3.size() > count) {
                 model.addAttribute("loadmore", true);
@@ -104,13 +131,18 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
         return Collections.emptyList();
     }
 
-    @RequestMapping(value = "/tablet/size", method = RequestMethod.PUT)
+    @Operation(
+            summary = "Get size list tablet by attribute in request body.",
+            description = "Get size list tablet by attribute in request body in the backend"
+    )
+    @PutMapping(value = "/tablet/size")
     @ResponseBody
     public int sizeTablet(HttpServletRequest request, @RequestBody String data) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(data);
-            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, 2);
+            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, EResponse.CMID_TABLET);
+
             return list3.size();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -118,4 +150,6 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
 
         return 0;
     }
+
+
 }

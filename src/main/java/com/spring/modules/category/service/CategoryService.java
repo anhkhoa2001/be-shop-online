@@ -18,13 +18,17 @@ public class CategoryService extends ATypeManagementService<CategoryModel> {
     }
 
     public List<CategoryModel> getByCmID(final int cmID) {
-        List<CategoryModel> categories = new ArrayList<>();
+        if(cmID == 0) {
+            return getAll();
+        } else {
+            List<CategoryModel> categories = new ArrayList<>();
 
-        getAll().forEach(e -> {
-            if(e.getProductLine().getId() == cmID) {
-                categories.add(e);
-            }
-        });
-        return categories;
+            getAll().forEach(e -> {
+                if(e.getProductLine().getId() == cmID) {
+                    categories.add(e);
+                }
+            });
+            return categories;
+        }
     }
 }

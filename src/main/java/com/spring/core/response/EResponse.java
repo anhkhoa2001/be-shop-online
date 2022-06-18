@@ -28,4 +28,7 @@ public class EResponse {
     public static final String OPTION_SORT_NAME_AZ = "az";
     public static final String OPTION_SORT_NAME_ZA = "za";
 
+    public static final int COUNT_TOP_CUSTOMER = 5;
+    public static final int SIZE_TABLE_MANAGE = 10;
+
 }

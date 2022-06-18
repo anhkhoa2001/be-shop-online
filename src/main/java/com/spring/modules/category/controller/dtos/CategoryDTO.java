@@ -31,8 +31,8 @@ public class CategoryDTO extends AItemDTO {
     @Schema(example = "")
     private String categoryCode;
 
-    @Schema(example = "{...}")
-    private List<ProductDTO> productDTOs;
+    @Schema(example = "10")
+    private int sizeProduct;
 
     public CategoryDTO() {
         this.setType(CategoryDTO.DTO_NAME);
@@ -86,11 +86,11 @@ public class CategoryDTO extends AItemDTO {
         this.categoryCode = categoryCode;
     }
 
-    public List<ProductDTO> getProductDTOs() {
-        return productDTOs;
+    public int getSizeProduct() {
+        return sizeProduct;
     }
 
-    public void setProductDTOs(final List<ProductDTO> productDTOs) {
-        this.productDTOs = productDTOs;
+    public void setSizeProduct(final int sizeProduct) {
+        this.sizeProduct = sizeProduct;
     }
 }

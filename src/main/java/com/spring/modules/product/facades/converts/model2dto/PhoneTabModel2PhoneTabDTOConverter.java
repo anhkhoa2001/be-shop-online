@@ -1,7 +1,7 @@
 package com.spring.modules.product.facades.converts.model2dto;
 
 import com.spring.core.facades.converter.model2dto.AModel2DTOConverter;
-import com.spring.modules.category.facades.converters.dto2model.model2dto.CategoryModel2CategoryDTOConverter;
+import com.spring.modules.category.facades.converters.model2dto.CategoryModel2CategoryDTOConverter;
 import com.spring.modules.product.controllers.dto.PhoneTabDTO;
 import com.spring.modules.product.models.PhoneTabModel;
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +41,6 @@ public class PhoneTabModel2PhoneTabDTOConverter extends AModel2DTOConverter<Phon
 
             if(Objects.nonNull(phoneTab.getCategory())) {
                 phoneTabDTO.setCategoryDTO(getCategoryModel2CategoryDTO().convert(phoneTab.getCategory()));
-                phoneTabDTO.getCategoryDTO().setProductDTOs(Collections.emptyList());
             }
             if(!StringUtils.isBlank(phoneTab.getChip())) {
                 phoneTabDTO.setChip(phoneTab.getChip());

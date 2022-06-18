@@ -4,18 +4,18 @@ let cmID = 0;
 let countProduct = 0;
 
 if(type === 'phone') {
-	linkAPI = "/phone-tab";
+	linkAPI = "/phone-tab/phone";
 	cmID = 1;
 } else if(type === 'tablet') {
-	linkAPI = "/phone-tab";
+	linkAPI = "/phone-tab/tablet";
 	cmID = 2;
 } else if(type === 'laptop') {
-	linkAPI = "/laptop";
+	linkAPI = "/laptop/item";
 	cmID = 3;
 }
 
 
-fetch(linkAPI + "/get-by", {
+fetch(linkAPI + "/get-by?count=-100&type=abc", {
     method: 'GET',
 }).then(resp => {
     if(resp.status === 200) {
@@ -24,17 +24,18 @@ fetch(linkAPI + "/get-by", {
 }).then(data => {
     countProduct = data.length;
 	document.querySelector("#main .products").innerHTML = updateProduct(data);
-	document.querySelector("#main .menu-input-max").innerHTML = 'The highest price is $' + getMaxPrice(data);
+	document.querySelector("#main .menu-input-max").innerHTML = 'The highest price is ' + getMaxPrice(data).priceDola;
 });
 
 function getMaxPrice(data) {
-	let maxPrice = -1;
+	let maxPrice = -1, obj = {};
 	for(let d of data) {
-		if(maxPrice <= d.priceDola) {
-			maxPrice = d.priceDola;
+		if(maxPrice <= d.price) {
+			maxPrice = d.price;
+			obj = d;
 		}
 	}
-	return maxPrice;
+	return obj;
 }
 
 function updateProduct(data) {
@@ -48,25 +49,25 @@ function updateProduct(data) {
 				+ "                            <h3>"+ d.name +"</h3>\r\n"
 				+ "                            <div class=\"rating\">\r\n"
 				+ "                                <svg>\r\n"
-				+ "                                    <use xlink:href=\"<c:url value=\"/resources/images/sprite.svg#icon-star-full\" />\"></use>\r\n"
+				+ "                                    <use xlink:href=\"../resources/images/sprite.svg#icon-star-full\" ></use>\r\n"
 				+ "                                </svg>\r\n"
 				+ "                                <svg>\r\n"
-				+ "                                    <use xlink:href=\"<c:url value=\"/resources/images/sprite.svg#icon-star-full\" />\"></use>\r\n"
+				+ "                                    <use xlink:href=\"../resources/images/sprite.svg#icon-star-full\" ></use>\r\n"
 				+ "                                </svg>\r\n"
 				+ "                                <svg>\r\n"
-				+ "                                    <use xlink:href=\"<c:url value=\"/resources/images/sprite.svg#icon-star-full\" />\"></use>\r\n"
+				+ "                                    <use xlink:href=\"../resources/images/sprite.svg#icon-star-full\" ></use>\r\n"
 				+ "                                </svg>\r\n"
 				+ "                                <svg>\r\n"
-				+ "                                    <use xlink:href=\"<c:url value=\"/resources/images/sprite.svg#icon-star-full\" />\"></use>\r\n"
+				+ "                                    <use xlink:href=\"../resources/images/sprite.svg#icon-star-full\" ></use>\r\n"
 				+ "                                </svg>\r\n"
 				+ "                                <svg>\r\n"
-				+ "                                    <use xlink:href=\"<c:url value=\"/resources/images/sprite.svg#icon-star-empty\" />\"></use>\r\n"
+				+ "                                    <use xlink:href=\"<c:url value=\"/resources/images/sprite.svg#icon-star-empty\" ></use>\r\n"
 				+ "                                </svg>\r\n"
 				+ "                            </div>\r\n"
 				+ "                            <div class=\"product__price\">\r\n"
-				+ "                                <h4>$"+ d.priceDola +"</h4>\r\n"
+				+ "                                <h4>"+ d.priceDola +"</h4>\r\n"
 				+ "                            </div>\r\n"
-				+ "                            <a href=\"/myspring/home/product/details?code="+ d.code +"\"><button type=\"submit\" class=\"product__btn\">Watch Now</button></a>\r\n"
+				+ "                            <a href=\"/home/product-detail?code="+ d.code +"\"><button type=\"submit\" class=\"product__btn\">Watch Now</button></a>\r\n"
 				+ "                        </div>\r\n"
 				+ "                    </div>";
 	}
@@ -116,11 +117,10 @@ function getSizeByArray(oldData) {
 function updateListCategory(element, data) {
 	let dataHTML = "";
 	for(let d of data) {
-		let size = d.sizePhoneTabs == 0 ? d.sizeLaptops : d.sizePhoneTabs;
 		dataHTML +=   "					<span>\r\n"
 					+ "                    <input class = \"check-type\" type=\"checkbox\" name=\"category\" id=\""+ d.id +"\" onclick=\"myChecked(this, "+ d.id +");\" value=\""+ d.id +"\">\r\n"
 					+ "                    <p>"+ d.line +"</p>\r\n"
-					+ "                    <h5>("+ size +")</h5>\r\n"
+					+ "                    <h5>("+ d.sizeProduct +")</h5>\r\n"
 					+ "                  </span>";
 	}
 	objectCategory = data;

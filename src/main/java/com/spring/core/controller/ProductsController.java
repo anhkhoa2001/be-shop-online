@@ -25,8 +25,8 @@ public class ProductsController {
         CustomerDTO customerDTO = customerFacade.getByUsername(username);
         if(Objects.nonNull(customerDTO)) {
             model.addAttribute("dto", customerDTO);
-
         }
-        return "search";
+        model.addAttribute("loadmore", false);
+        return "list-product";
     }
 }

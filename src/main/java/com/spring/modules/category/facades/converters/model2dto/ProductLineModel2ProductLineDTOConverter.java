@@ -1,4 +1,4 @@
-package com.spring.modules.category.facades.converters.dto2model.model2dto;
+package com.spring.modules.category.facades.converters.model2dto;
 
 import com.spring.core.facades.converter.model2dto.AModel2DTOConverter;
 import com.spring.modules.category.controller.dtos.ProductLineDTO;

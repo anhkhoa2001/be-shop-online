@@ -27,17 +27,18 @@ public class HomeController {
         model.addAttribute("isLog", AuthenticationSystem.isLogged());
         String username = AuthenticationSystem.getUsernameCurrent();
         String url = "home";
-        System.out.println(username);
         CustomerDTO customerDTO = customerFacade.getByUsername(username);
         if(Objects.nonNull(customerDTO)) {
             model.addAttribute("dto", customerDTO);
 
             if(Objects.equals(customerDTO.getRole(), ERole.ADMIN.toString())) {
-                url = "manage";
+                return "redirect:/manage";
+            } else {
+               return url;
             }
         }
 
-        return url;
+        return "error";
     }
 
     @GetMapping("/test")

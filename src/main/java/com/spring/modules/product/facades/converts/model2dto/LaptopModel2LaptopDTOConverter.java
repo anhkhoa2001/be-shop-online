@@ -1,7 +1,7 @@
 package com.spring.modules.product.facades.converts.model2dto;
 
 import com.spring.core.facades.converter.model2dto.AModel2DTOConverter;
-import com.spring.modules.category.facades.converters.dto2model.model2dto.CategoryModel2CategoryDTOConverter;
+import com.spring.modules.category.facades.converters.model2dto.CategoryModel2CategoryDTOConverter;
 import com.spring.modules.product.controllers.dto.LaptopDTO;
 import com.spring.modules.product.models.LaptopModel;
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +41,6 @@ public class LaptopModel2LaptopDTOConverter extends AModel2DTOConverter<LaptopMo
 
             if(Objects.nonNull(laptop.getCategory())) {
                 laptopDTO.setCategoryDTO(getCategoryModel2CategoryDTO().convert(laptop.getCategory()));
-                laptopDTO.getCategoryDTO().setProductDTOs(Collections.emptyList());
             }
 
             if(!StringUtils.isBlank(laptop.getRam())) {

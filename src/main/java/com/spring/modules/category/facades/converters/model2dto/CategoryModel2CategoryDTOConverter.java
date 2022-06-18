@@ -1,10 +1,16 @@
-package com.spring.modules.category.facades.converters.dto2model.model2dto;
+package com.spring.modules.category.facades.converters.model2dto;
 
 import com.spring.core.facades.converter.model2dto.AModel2DTOConverter;
 import com.spring.modules.category.controller.dtos.CategoryDTO;
 import com.spring.modules.category.model.CategoryModel;
+import com.spring.modules.product.facades.converts.model2dto.ProductModel2ProductDTOConverter;
+import com.spring.modules.product.models.ProductModel;
+import com.spring.modules.product.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -12,6 +18,9 @@ public class CategoryModel2CategoryDTOConverter extends AModel2DTOConverter<Cate
 
     private final ProductLineModel2ProductLineDTOConverter productLineModel2ProductLineDTO;
     private final ManufacturerModel2ManufacturerDTOConverter manufacturerModel2ManufacturerDTO;
+
+    @Autowired
+    private ProductService productService;
 
     public CategoryModel2CategoryDTOConverter(final ProductLineModel2ProductLineDTOConverter productLineModel2ProductLineDTO, final ManufacturerModel2ManufacturerDTOConverter manufacturerModel2ManufacturerDTO) {
         super(new CategoryDTO());
@@ -44,9 +53,16 @@ public class CategoryModel2CategoryDTOConverter extends AModel2DTOConverter<Cate
             if(Objects.nonNull(category.getManufacturer())) {
                 categoryDTO.setManufacturerDTO(getManufacturerModel2ManufacturerDTO().convert(category.getManufacturer()));
             }
+            List<ProductModel> products = getProductService().getByCID(category.getId());
+            if(!CollectionUtils.isEmpty(products)) {
+                categoryDTO.setSizeProduct(products.size());
+            }
 
             return categoryDTO;
         }
         return null;
+    }
+    public ProductService getProductService() {
+        return productService;
     }
 }
