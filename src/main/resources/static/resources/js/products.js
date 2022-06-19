@@ -24,7 +24,7 @@ fetch(linkAPI + "/get-by?count=-100&type=abc", {
 }).then(data => {
     countProduct = data.length;
 	document.querySelector("#main .products").innerHTML = updateProduct(data);
-	document.querySelector("#main .menu-input-max").innerHTML = 'The highest price is ' + getMaxPrice(data).priceDola;
+	document.querySelector("#main .menu-input-max").innerHTML = 'The highest price is ' + getMaxPrice(data).priceDola + '$';
 });
 
 function getMaxPrice(data) {
@@ -65,7 +65,7 @@ function updateProduct(data) {
 				+ "                                </svg>\r\n"
 				+ "                            </div>\r\n"
 				+ "                            <div class=\"product__price\">\r\n"
-				+ "                                <h4>"+ d.priceDola +"</h4>\r\n"
+				+ "                                <h4>"+ d.price +"$</h4>\r\n"
 				+ "                            </div>\r\n"
 				+ "                            <a href=\"/home/product-detail?code="+ d.code +"\"><button type=\"submit\" class=\"product__btn\">Watch Now</button></a>\r\n"
 				+ "                        </div>\r\n"

@@ -35,4 +35,12 @@ public abstract class AItemDTO {
     public void setCode(final String code) {
         this.code = code;
     }
+
+    @Override
+    public String toString() {
+        return "AItemDTO{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                '}';
+    }
 }

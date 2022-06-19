@@ -9,7 +9,7 @@ function addToCart() {
 		}
 	}
 	
-	fetch("/myspring/product/details/addtocart?code=" + code, {
+	fetch("/orders/add-to-cart?code=" + code, {
 	    method: 'GET',
 	}).then(resp => {
 	    if(resp.status === 200) {
@@ -27,12 +27,12 @@ function addToCart() {
 				count++;
 			}
 		}
-		console.log(count == 1);
-	    if(data == 1) {
+		console.log(data);
+	    if(data === 200) {
 			alert("Thêm sản phẩm vào giỏ hàng thành công!!")
 		} else {
 			alert("Vui lòng đăng nhập!!");
-			window.location.replace("/myspring/login");
+			window.location.replace("/login?status=401");
 		}
 	});
 }

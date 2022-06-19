@@ -18,4 +18,8 @@ public class CustomerService extends ATypeManagementService<CustomerModel> {
         CustomerRepository repository = (CustomerRepository) getR();
         return repository.findCustomerModelByUsername(username);
     }
+
+    public void deleteByUsername(final String username) {
+        ((CustomerRepository) getR()).deleteByUsername(username);
+    }
 }

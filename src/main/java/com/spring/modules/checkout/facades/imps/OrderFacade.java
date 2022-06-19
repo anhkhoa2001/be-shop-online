@@ -9,6 +9,7 @@ import com.spring.modules.checkout.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -24,14 +25,31 @@ public class OrderFacade extends ATypeManagementFacade<OrderDTO, OrderModel, Ord
     }
 
     public List<OrderDTO> getOrderLimit(final int count) {
-        List<OrderDTO> orderDTOS = getAll();
-        Collections.sort(orderDTOS, new Comparator<OrderDTO>() {
-            @Override
-            public int compare(OrderDTO p1, OrderDTO p2) {
-                return Integer.compare(p2.getTotal(), p1.getTotal());
-            }
-        });
+        try {
+            return getModel2dto().convertAll(getService().getOrderLimit(count));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
 
-        return orderDTOS.size() <= count ? orderDTOS : orderDTOS.subList(0, count);
+    public void updateStatusById(final long id) {
+        try {
+            OrderModel order = getService().getById(id);
+            order.setStatus(true);
+            getService().update(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<OrderDTO> getAllOrdersByCreated(String timer) {
+        try {
+            return getModel2dto().convertAll(getService().getAllOrdersByCreated(timer));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 }

@@ -1,4 +1,4 @@
-package com.spring.core.config;
+package com.spring.modules.authentication.config;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

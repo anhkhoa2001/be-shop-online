@@ -80,12 +80,12 @@
                     <a onclick="test()" class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-bs-toggle="dropdown" href="#" role="button"
                        aria-haspopup="false" aria-expanded="false">
                         <i data-feather="bell" class="align-self-center topbar-icon"></i>
-                        <span class="badge bg-danger rounded-pill noti-icon-badge noti-count">${countNoti }</span>
+                        <span class="badge bg-danger rounded-pill noti-icon-badge noti-count" th:text="${countNoti }"></span>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end dropdown-lg pt-0">
                         <h6 class="dropdown-item-text font-15 m-0 py-3 border-bottom d-flex justify-content-between align-items-center">
-                            Notifications <span class="badge bg-primary rounded-pill noti-count">${countNoti }</span>
+                            Notifications <span class="badge bg-primary rounded-pill noti-count" th:text="${countNoti }"></span>
                         </h6>
                         <div style="height: auto" class="notification-menu" data-simplebar>
                             <!-- item-->
@@ -171,7 +171,7 @@
                                     <div class="row d-flex justify-content-center">
                                         <div class="col">
                                             <p class="text-dark mb-0 fw-semibold">Orders</p>
-                                            <h3 class="m-0">${count }</h3>
+                                            <h3 class="m-0" th:text="${count}"></h3>
                                             <p class="mb-0 text-truncate text-muted">
                                                 	<span class="text-success">
                                                 		<i class="mdi mdi-trending-up"></i>8.5%
@@ -193,7 +193,7 @@
                                     <div class="row d-flex justify-content-center">
                                         <div class="col">
                                             <p class="text-dark mb-0 fw-semibold">Products</p>
-                                            <h3 class="m-0">${totalQuantity }</h3>
+                                            <h3 class="m-0" th:text="${totalQuantity }"></h3>
                                             <p class="mb-0 text-truncate text-muted"><span class="text-success"><i class="mdi mdi-trending-up"></i>1.5%</span> Total Products Today</p>
                                         </div>
                                         <div class="col-auto align-self-center">
@@ -211,7 +211,7 @@
                                     <div class="row d-flex justify-content-center">
                                         <div class="col">
                                             <p class="text-dark mb-0 fw-semibold">Price</p>
-                                            <h3 class="m-0">$ ${totalPrice }</h3>
+                                            <h3 class="m-0" th:text="${totalPrice }"></h3>
                                             <p class="mb-0 text-truncate text-muted"><span class="text-danger"><i class="mdi mdi-trending-down"></i>35%</span> Total Price Today</p>
                                         </div>
                                         <div class="col-auto align-self-center">
@@ -414,21 +414,23 @@
                     </div><!--end page-title-box-->
                 </div><!--end col-->
             </div><!--end row-->
-            <!-- end page title end breadcrumb -->
+
+
+            <!-- LIST PRODUCT -->
             <div class="row">
                 <div class="col-12">
                     <div class="table-responsive">
                         <table id="datatable" class="table table-bordered">
                             <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Category</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th>Avai.Color</th>
-                                <th>Action</th>
-                            </tr>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Avai.Color</th>
+                                    <th>Action</th>
+                                </tr>
                             </thead>
                             <tbody class = "product">
 
@@ -461,14 +463,15 @@
                     </div><!--end page-title-box-->
                 </div><!--end col-->
             </div><!--end row-->
-            <!-- end page title end breadcrumb -->
+
+            <!-- LIST ORDER -->
             <div class="row">
                 <div class="col-12">
                     <div class="table-responsive">
                         <table id="datatable" class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>Ordinal</th>
+                                <th>Id</th>
                                 <th>Info</th>
                                 <th>Quantity</th>
                                 <th>Amount</th>
@@ -508,14 +511,15 @@
                     </div><!--end page-title-box-->
                 </div><!--end col-->
             </div><!--end row-->
-            <!-- end page title end breadcrumb -->
+
+            <!-- LIST ACCOUNT -->
             <div class="row">
                 <div class="col-12">
                     <div class="table-responsive">
                         <table id="datatable" class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>Ordinal</th>
+                                <th>Id</th>
                                 <th>Info</th>
                                 <th>Username</th>
                                 <th>Password</th>
@@ -539,7 +543,7 @@
         </div><!-- container -->
 
         <div class="input_content add phone tablet">
-            <form class = "input_content_grid" action="/myspring/apimanage/product/add?line=phone"
+            <form class = "input_content_grid" action="/phone-tab/create"
                   method = "POST" enctype="multipart/form-data" accept-charset="UTF-8">
                 <i class="dripicons-cross" onclick="closeItem(this, 'phone')"></i>
                 <h2 class="title">Add Smart Phone</h2>
@@ -561,15 +565,15 @@
                 </div>
                 <div class = "screen">
                     <label >Screen: </label>
-                    <input type="text" name = "screen">
+                    <input type="text" name = "display">
                 </div>
                 <div class="front">
                     <label >Front Camera: </label>
-                    <input type="text" name="front">
+                    <input type="text" name="fc">
                 </div>
                 <div class="back">
                     <label >Back Camera: </label>
-                    <input type="text" name="back">
+                    <input type="text" name="bc">
                 </div>
                 <div class="ram">
                     <label >RAM: </label>
@@ -595,7 +599,7 @@
 
 
         <div class="input_content add laptop">
-            <form class = "input_content_grid" action="/myspring/apimanage/product/add?line=laptop"
+            <form class = "input_content_grid" action="/laptop/create"
                   method = "POST" enctype="multipart/form-data" accept-charset="UTF-8">
                 <i class="dripicons-cross" onclick="closeItem(this, 'laptop')"></i>
                 <h2 class="title">Add Laptop</h2>
@@ -648,13 +652,13 @@
                     <input type="file" name="image" style="border: none;" >
                 </div>
                 <div class = "submit">
-                    <button type="submit" onclick="submitFormAddProduct(this, 'laptop')" >Nhập</button>
+                    <button type="submit" >Nhập</button>
                 </div>
             </form>
         </div>
 
         <div class="input_content edit phone tablet">
-            <form class = "input_content_grid" action="/myspring/apimanage/product/edit?line=phone"
+            <form class = "input_content_grid" action="/phone-tab/update"
                   method = "POST" enctype="multipart/form-data" accept-charset="UTF-8">
                 <i class="dripicons-cross" onclick="closeItem(this, 'phone')"></i>
                 <h2 class="title">Edit Smart Phone</h2>
@@ -663,7 +667,7 @@
                     <input type="text" name = "name">
                     <input type="text" name = "id" style="display: none">
                 </div>
-                <div class = "code">
+                <div class = "code" style="display: none">
                     <label >Code: </label>
                     <input type="text" name="code" class="code">
                 </div>
@@ -677,15 +681,15 @@
                 </div>
                 <div class = "screen">
                     <label >Screen: </label>
-                    <input type="text" name = "screen" class = "screen">
+                    <input type="text" name = "display" class = "display">
                 </div>
                 <div class="front">
                     <label >Front Camera: </label>
-                    <input type="text" name="front" class="front">
+                    <input type="text" name="fc" class="fc">
                 </div>
                 <div class="back">
                     <label >Back Camera: </label>
-                    <input type="text" name="back" class="back">
+                    <input type="text" name="bc" class="bc">
                 </div>
                 <div class="ram">
                     <label >RAM: </label>
@@ -704,13 +708,13 @@
                     <input type="file" name="image">
                 </div>
                 <div class = "submit">
-                    <button type="submit" onclick="submitFormEditProduct(this, 'phone')">Nhập</button>
+                    <button type="submit">Nhập</button>
                 </div>
             </form>
         </div>
 
         <div class="input_content edit laptop">
-            <form class = "input_content_grid" action="/myspring/apimanage/product/edit?line=laptop"
+            <form class = "input_content_grid" action="/laptop/update"
                   method = "POST" enctype="multipart/form-data" accept-charset="UTF-8">
                 <i class="dripicons-cross" onclick="closeItem(this, 'laptop')"></i>
                 <h2 class="title">Edit Laptop</h2>
@@ -719,7 +723,7 @@
                     <input type="text" name = "name" >
                     <input type="text" name = "id" style="display: none">
                 </div>
-                <div class = "code">
+                <div class = "code" style="display: none">
                     <label>Code: </label>
                     <input type="text" name="code" class="code">
                 </div>
@@ -764,7 +768,7 @@
                     <input type="file" name="image">
                 </div>
                 <div class = "submit">
-                    <button type="submit" onclick="submitFormEditProduct(this, 'laptop')">Nhập</button>
+                    <button type="submit">Nhập</button>
                 </div>
             </form>
         </div>

@@ -1,7 +1,7 @@
 
 ////////////////////////////////////////////////////////////
 //lay 8 dien thoai gia cao nhat
-fetch("/phone-tab/get-by?count=8&type=desc", {
+fetch("/phone-tab/phone/get-by?count=8&type=desc", {
     method: 'GET',
 }).then(resp => {
     if(resp.status === 200) {
@@ -38,7 +38,7 @@ function updateHome(element, data) {
 					+ "                  </svg>\r\n"
 					+ "                </div>\r\n"
 					+ "                <div class=\"product__price\">\r\n"
-					+ "                  <h4> $"+ d.priceDola +"</h4>\r\n"
+					+ "                  <h4>"+ d.price +"$</h4>\r\n"
 					+ "                </div>\r\n"
 					+ "                <a href=\"/home/product-detail?code="+ d.code +"\"><button type=\"submit\" class=\"product__btn\">Watch Now</button></a>\r\n"
 					+ "              </div>\r\n"
@@ -49,7 +49,7 @@ function updateHome(element, data) {
 
 ////////////////////////////////////////////////////////
 //lay 8 laptop gia cao nhat
-fetch("/laptop/get-by?count=8&type=desc", {
+fetch("/laptop/item/get-by?count=8&type=desc", {
     method: 'GET',
 }).then(resp => {
     if(resp.status === 200) {

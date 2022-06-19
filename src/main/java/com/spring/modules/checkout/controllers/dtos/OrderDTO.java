@@ -3,7 +3,6 @@ package com.spring.modules.checkout.controllers.dtos;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.spring.core.controller.dto.AItemDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -125,5 +124,47 @@ public class OrderDTO extends AItemDTO {
 
     public OrderDTO() {
         this.setType(OrderDTO.DTO_NAME);
+    }
+
+    public OrderDTO(String name, String email, String phone, String address, int quantity, String created, int total) {
+        super();
+        this.setType(OrderDTO.DTO_NAME);
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.quantity = quantity;
+        this.created = created;
+        this.total = total;
+    }
+
+    public OrderDTO(String name, String email, String phone, String address, int quantity,
+                  String created, int total, boolean status) {
+        super();
+        this.setType(OrderDTO.DTO_NAME);
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.quantity = quantity;
+        this.created = created;
+        this.total = total;
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDTO{" +
+                "type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", quantity=" + quantity +
+                ", created='" + created + '\'' +
+                ", total=" + total +
+                ", status=" + status +
+                ", orderProductDTOs=" + orderProductDTOs +
+                "} " + super.toString();
     }
 }

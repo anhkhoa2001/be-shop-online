@@ -31,4 +31,15 @@ public class CategoryService extends ATypeManagementService<CategoryModel> {
             return categories;
         }
     }
+
+    public CategoryModel findByCategoryCode(final String code) {
+        long id = 0;
+        List<CategoryModel> categories = getAll();
+        for(CategoryModel category:categories) {
+            if(category.getCategoryCode() != null && code.contains(category.getCategoryCode())) {
+                id = category.getId();
+            }
+        }
+        return getById(id);
+    }
 }

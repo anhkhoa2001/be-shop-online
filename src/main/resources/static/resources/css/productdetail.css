@@ -236,7 +236,7 @@ Navigation
   margin-right: 1rem;
 }
 
-.nav__icons #cart__total {
+.nav__icons .cart__total {
   font-size: 1rem;
   position: absolute;
   top: 2px;

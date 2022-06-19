@@ -1,14 +1,14 @@
 @font-face {
 	font-family: "Lato-Regular";
-	src: url('../fonts/lato/Lato-Regular.ttf');
+	src: url('http://localhost:8080/resources/fonts/lato/Lato-Regular.ttf');
 }
 @font-face {
 	font-family: "Lato-Black";
-	src: url('../fonts/lato/Lato-Black.ttf');
+	src: url('http://localhost:8080/resources/fonts/lato/Lato-Black.ttf');
 }
 @font-face {
 	font-family: "Lato-Bold";
-	src: url('../fonts/lato/Lato-Bold.ttf');
+	src: url('http://localhost:8080/resources/fonts/lato/Lato-Bold.ttf');
 }
 * {
   -webkit-box-sizing: border-box;
@@ -20,7 +20,7 @@ body {
 	font-size: 14px;
 	margin: 0;
 	color: #999;
-	background: url('../images/form-wizard-bg.jpg') no-repeat center center;
+	background: url('http://localhost:8080/resources/images/form-wizard-bg.jpg') no-repeat center center;
 	height: 100vh;
 	background-size: cover;
 	display: flex;

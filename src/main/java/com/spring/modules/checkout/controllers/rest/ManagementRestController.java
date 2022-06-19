@@ -16,12 +16,10 @@ import com.spring.modules.product.facades.impls.PhoneTabFacade;
 import org.apache.logging.log4j.util.Strings;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -244,7 +242,7 @@ public class ManagementRestController {
                     orderDTOS.size()/EResponse.SIZE_TABLE_MANAGE : orderDTOS.size()/EResponse.SIZE_TABLE_MANAGE + 1;
             List<OrderDTO> orderDTOS2 = new ArrayList<>();
             end = (end >= orderDTOS.size()) ? orderDTOS.size() - 1 : end;
-            orderDTOS2 = orderDTOS2.subList(start, end);
+            orderDTOS2 = orderDTOS.subList(start, end+1);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("countPage", countPage);
             JSONArray jsonArray = new JSONArray();
@@ -286,7 +284,7 @@ public class ManagementRestController {
     }
 
     @SuppressWarnings("unchecked")
-    @GetMapping(value = "/apimanage/account", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/manage/account", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String apiManageAccount(@RequestParam int end, @RequestParam int start) {
         List<CustomerDTO> customerDTOS = getCustomerFacade().getAll();
@@ -327,6 +325,67 @@ public class ManagementRestController {
     }
 
 
+    @GetMapping(value = "/manage/notification")
+    @ResponseBody
+    public List<OrderDTO> apiManageNotification(HttpServletRequest request) {
+        try {
+            List<OrderDTO> newOrders = new ArrayList<>();
+            List<OrderDTO> orderDTOs = getOrderFacade().getAll();
+            for(OrderDTO o:orderDTOs) {
+                if(!o.isStatus()) {
+                    newOrders.add(o);
+                }
+            }
+
+            for(OrderDTO o:newOrders) {
+                getOrderFacade().updateStatusById(o.getId());
+            }
+
+            return newOrders;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    @PutMapping(value = "/manage/cart")
+    @ResponseBody
+    public List<ProductDTO> apiCart(HttpServletRequest request, Model model, @RequestBody String data) {
+        List<ProductDTO> productDTOS = new ArrayList<>();
+        List<String> codes = new ArrayList<>();
+        JSONParser parser = new JSONParser();
+        try {
+            JSONArray json = (JSONArray) parser.parse(data);
+            for(int i=0; i<json.size(); i++) {
+                JSONObject jsonObject = (JSONObject) json.get(i);
+                codes.add(jsonObject.get("key").toString());
+            }
+            List<LaptopDTO> laptopDTOS = getLaptopFacade().getAll();
+            for(int j=0; j<codes.size(); j++) {
+                for(int i=0; i<laptopDTOS.size(); i++) {
+                    if(codes.get(j).equals(laptopDTOS.get(i).getCode())) {
+                        productDTOS.add((ProductDTO) laptopDTOS.get(i));
+                    }
+                }
+            }
+
+            List<PhoneTabDTO> phoneTabDTOS = getPhoneTabFacade().getAll();
+            for(int j=0; j<codes.size(); j++) {
+                for(int i=0; i<phoneTabDTOS.size(); i++) {
+                    if(codes.get(j).equals(phoneTabDTOS.get(i).getCode())) {
+                        ProductDTO productDTO = (ProductDTO) phoneTabDTOS.get(i);
+                        productDTOS.add(productDTO);
+                    }
+                }
+            }
+
+            return productDTOS;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
 
 
     public OrderFacade getOrderFacade() {

@@ -20,7 +20,6 @@ public class LaptopService extends ATypeManagementService<LaptopModel> {
 
     public List<LaptopModel> getByCmID(final long cmID) {
         List<LaptopModel> laptops = new ArrayList<>();
-
         getAll().forEach(e -> {
             if(e.getCategory().getProductLine().getId() == cmID) {
                 laptops.add(e);

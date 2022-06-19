@@ -89,4 +89,21 @@ public class LaptopDTO extends ProductDTO {
     public LaptopDTO() {
         super.setType(LaptopDTO.DTO_NAME);
     }
+
+    public LaptopDTO(final String code, final String name, final long price, final int quantity, final String image, final String display,
+                     final String memory, final String cpu, final String ram, final String card, final float weight, final String size) {
+        super.setType(PhoneTabDTO.DTO_NAME);
+        super.setImage(image);
+        super.setName(name);
+        super.setPrice(price);
+        super.setCode(code);
+        super.setQuantityStock(quantity);
+        this.display = display;
+        this.memory = memory;
+        this.cpu = cpu;
+        this.ram = ram;
+        this.card = card;
+        this.weight = weight;
+        this.size = size;
+    }
 }

@@ -14,6 +14,7 @@ function getAllProductInLocalStorage() {
 		}
 	}
 	console.log(values.length);
+	console.log(values);
 	return values;
 }
 
@@ -22,29 +23,29 @@ function getAllProductInLocalStorage() {
 function updateListProduct(data) {
 	let dataHTML = "";
 	for(var d of data) {
-		totalPrice += parseInt(d.priceDola);
+		totalPrice += parseInt(d.price);
 		dataHTML += "<tr class = \"product__1\">\r\n"
 				+ "                                        <td class=\"product__thumbnail\">\r\n"
-				+ "                                            <a href=\"/myspring/home/product/details?code="+ d.code +"\">\r\n"
+				+ "                                            <a href=\"/home/product-detail?code="+ d.code +"\">\r\n"
 				+ "                                                <img src=\""+ d.image +"\" alt=\"\">\r\n"
 				+ "                                            </a>\r\n"
 				+ "                                        </td>\r\n"
 				+ "                                        <td class=\"product__name\">\r\n"
-				+ "                                            <a href=\"/myspring/home/product/details?code="+ d.code +"\">"+ d.name +"</a>\r\n"
+				+ "                                            <a href=\"/home/product-detail?code="+ d.code +"\">"+ d.name +"</a>\r\n"
 				+ "                                        </td>\r\n"
 				+ "                                        <td class=\"product__price\">\r\n"
 				+ "                                            <div class=\"price\">\r\n"
-				+ "                                                <span class=\"unit__price\">$"+ d.priceDola +"</span>\r\n"
+				+ "                                                <span class=\"unit__price\">$"+ d.price +"</span>\r\n"
 				+ "                                            </div>\r\n"
 				+ "                                        </td>\r\n"
 				+ "											\r\n"
 				+ "                                        <td class=\"product__subtotal\">\r\n"
 				+ "                                            <div class=\"price\">\r\n"
-				+ "                                                <span class=\"new__price\">$"+ d.priceDola +"</span>\r\n"
+				+ "                                                <span class=\"new__price\">$"+ d.price +"</span>\r\n"
 				+ "                                            </div>\r\n"
-				+ "                                            <a onclick=\"deleteProduct(this, '"+ d.code +"', '"+ d.priceDola +"')\" class=\"remove__cart-item\">\r\n"
+				+ "                                            <a onclick=\"deleteProduct(this, '"+ d.code +"', '"+ d.price +"')\" class=\"remove__cart-item\">\r\n"
 				+ "                                                <svg>\r\n"
-				+ "                                                    <use xlink:href=\"/myspring/resources/images/sprite.svg#icon-trash\"></use>\r\n"
+				+ "                                                    <use xlink:href=\"../resources/images/sprite.svg#icon-trash\"></use>\r\n"
 				+ "                                                </svg>\r\n"
 				+ "                                            </a>\r\n"
 				+ "                                        </td>\r\n"
@@ -55,7 +56,7 @@ function updateListProduct(data) {
 	updateCartTotal(totalPrice, totalQuantity);
 }
 
-fetch("/myspring/apicart", { 
+fetch("/product/view-cart", {
 	method: 'PUT',
 	headers: {
 	    'Content-Type': 'application/json',

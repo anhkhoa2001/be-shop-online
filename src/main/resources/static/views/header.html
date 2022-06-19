@@ -60,26 +60,25 @@
                         <use xlink:href="/resources/images/sprite.svg#icon-search" ></use>
                     </svg>
                 </a>
-                <a href="#" class="icon__item" th:if="${isLog}">
+                <a href="/cart" class="icon__item" th:if="${isLog}">
                     <svg class="icon__cart">
                         <use xlink:href="/resources/images/sprite.svg#icon-shopping-basket" ></use>
                     </svg>
                     <span class = "cart__total cart_total">0</span>
                 </a>
-                <a href="/logout" class="icon__item" th:if="${isLog}">
+                <a href="/login?status=401" class="icon__item" th:if="${isLog}">
                     <i class="fas fa-sign-in-alt"></i>
                 </a>
             </div>
         </nav>
     </div>
-<!--
 <script type="text/javascript">
     function getAllProductInLocalStorage(username) {
         var values = [];
         var keys = Object.keys(localStorage);
 
         for(var k of keys) {
-            if(localStorage.getItem(k) == username) {
+            if(localStorage.getItem(k) === username) {
                 values[values.length++] = {
                     "key": k,
                     "value": localStorage.getItem(k)
@@ -89,10 +88,20 @@
         console.log(values.length);
         return values;
     }
-    let usernameFake = "${dto.username}";
-    if(usernameFake == 0) {
-
-    } else {
-        document.querySelector(".cart_total").innerHTML = getAllProductInLocalStorage(usernameFake).length;
-    }
-</script>-->
+    let customer = {};
+    fetch("/customer/get-logged", {
+        method: 'GET',
+    }).then(resp => {
+        if(resp.status === 200) {
+            return resp.json();
+        } else {
+            return undefined;
+        }
+    }).then(data => {
+        if(data === undefined) {
+            document.querySelector(".cart_total").innerHTML = 0;
+        } else {
+            document.querySelector(".cart_total").innerHTML = getAllProductInLocalStorage(data.username).length;
+        }
+    });
+</script>

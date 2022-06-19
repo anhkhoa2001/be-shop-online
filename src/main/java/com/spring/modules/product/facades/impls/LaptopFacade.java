@@ -98,7 +98,7 @@ public class LaptopFacade extends ATypeManagementFacade<LaptopDTO, LaptopModel, 
             list2 = list;
         } else {
             for(LaptopDTO p : list) {
-                if(p.getPrice()/22 >= bot && p.getPrice()/22 <= top) {
+                if(p.getPrice() >= bot && p.getPrice() <= top) {
                     list2.add(p);
                 }
             }

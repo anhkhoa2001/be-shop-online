@@ -1,6 +1,7 @@
+
 //////////////////////////////////////////////////////////
 ////////////////DASHBOARD//////////////////////////////////
-fetch("/myspring/apimanage/chart?number=one", {
+fetch("/manage/chart?number=one", {
     method: 'GET',
 }).then(resp => {
     if(resp.status === 200) {
@@ -30,7 +31,7 @@ fetch("/myspring/apimanage/chart?number=one", {
 });	
 });
 
-fetch("/myspring/apimanage/chart?number=two", {
+fetch("/manage/chart?number=two", {
     method: 'GET',
 }).then(resp => {
     if(resp.status === 200) {
@@ -61,7 +62,7 @@ fetch("/myspring/apimanage/chart?number=two", {
 
 
 
-fetch("/myspring/apimanage/table/one", {
+fetch("/manage/table/one", {
     method: 'GET',
 }).then(resp => {
     if(resp.status === 200) {
@@ -81,7 +82,7 @@ fetch("/myspring/apimanage/table/one", {
 	document.querySelector(".table.one tbody").innerHTML = dataHTML;
 });
 
-fetch("/myspring/apimanage/table/two", {
+fetch("/manage/table/two", {
     method: 'GET',
 }).then(resp => {
     if(resp.status === 200) {
@@ -102,7 +103,7 @@ fetch("/myspring/apimanage/table/two", {
 	document.querySelector(".table.two tbody").innerHTML = dataHTML;
 });
 
-fetch("/myspring/apimanage/table/three", {
+fetch("/manage/table/three", {
     method: 'GET',
 }).then(resp => {
     if(resp.status === 200) {
@@ -314,16 +315,19 @@ function clickBtnArrow(e, arrow) {
             count = i;
         }
     }
-    if(arrow == 'left') {
+    if(arrow === 'left') {
 		if(varChangeState == states[1]) {
-			updateTableProduct(getUrlTableProduct(totalPage, search));
+			updateTableProduct(getUrlTableProduct(1, search));
 		} else if(varChangeState == states[2]) {
-			updateTableOrders(getUrlTableOrders(totalPage));
+            console.log("da vao day state")
+			updateTableOrders(getUrlTableOrders(1));
 		} else if(varChangeState == states[3]) {
-			updateTableAccount(geturgetUrlTableAccount(totalPage));
+			updateTableAccount(geturgetUrlTableAccount(1));
 		}
+
         btnPagingActive.classList.remove("active");
         if(totalPage < 7) {
+            console.log("da vao day")
             btnPaging[1].classList.add("active");
         } else {
             if(isBefore) {
@@ -353,9 +357,10 @@ function clickBtnArrow(e, arrow) {
 		} else if(varChangeState == states[3]) {
 			updateTableAccount(geturgetUrlTableAccount(totalPage));
 		}
+
         btnPagingActive.classList.remove("active");
         if(totalPage < 7) {
-            btnPaging[6].classList.add("active");
+            btnPaging[totalPage].classList.add("active");
         } else {
             if(isBefore) {
                 for(i=2; i<count; i++) {
@@ -386,7 +391,7 @@ let search = "";
 function getUrlTableProduct(page, search) {
 	dataJsonProduct.start = (page-1)*10;
 	dataJsonProduct.end = page*10 -1;
-	return "/myspring/apimanage/product?start="+dataJsonProduct.start+"&end="+dataJsonProduct.end+ "&search=" + search;
+	return "/manage/product?start="+dataJsonProduct.start+"&end="+dataJsonProduct.end+ "&search=" + search;
 }
 
 function updateTableProduct(urlData) {
@@ -473,7 +478,7 @@ function closeItem(element, type) {
 
 
 function openEditItem(element, type, code) {
-	if(type.indexOf("smart") != -1) {
+	if(type.indexOf("smart") !== -1) {
 		type = type.split(' ')[1];
 	}
 	const elementItem = document.querySelector(".input_content.edit." + type);
@@ -481,24 +486,24 @@ function openEditItem(element, type, code) {
     if(type == 'tablet') {
         elementItem.children[0].children[1].innerHTML = 'Add Tablet';
     }
-    if(elementItem.className.indexOf("open") != -1) {
+    if(elementItem.className.indexOf("open") !== -1) {
         elementItem.classList.remove("open");
     } else {
         elementItem.classList.add("open");
     }
 
 	if(type != 'laptop') {
-		fetch("/myspring/apimanage/product/edit?code=" + code, { 
+		fetch("/phone-tab/get-by-code?code=" + code, {
 			method: 'GET',
 		})
 		.then(response => response.json())
 		.then(data => {
 			elementItem.children[0].children[2].children[1].value = data.name;
-			elementItem.children[0].children[2].children[2].value = data.phonetab_id;
+			elementItem.children[0].children[2].children[2].value = data.id;
 			elementItem.children[0].children[3].children[1].value = data.code;
 			elementItem.children[0].children[4].children[1].value = data.priceDola;
 			elementItem.children[0].children[5].children[1].value = data.quantityStock;
-			elementItem.children[0].children[6].children[1].value = data.screen;
+			elementItem.children[0].children[6].children[1].value = data.display;
 			elementItem.children[0].children[7].children[1].value = data.frontCamera;
 			elementItem.children[0].children[8].children[1].value = data.backCamera;
 			elementItem.children[0].children[9].children[1].value = data.ram;
@@ -507,13 +512,13 @@ function openEditItem(element, type, code) {
 			elementItem.children[0].children[12].children[0].src = data.image;
 		});
 	} else {
-		fetch("/myspring/apimanage/product/edit?code=" + code, { 
+		fetch("/laptop/get-by-code?code=" + code, {
 			method: 'GET',
 		})
 		.then(response => response.json())
 		.then(data => {
 			elementItem.children[0].children[2].children[1].value = data.name;
-			elementItem.children[0].children[2].children[2].value = data.laptop_id;
+			elementItem.children[0].children[2].children[2].value = data.id;
 			elementItem.children[0].children[3].children[1].value = data.code;
 			elementItem.children[0].children[4].children[1].value = data.priceDola;
 			elementItem.children[0].children[5].children[1].value = data.quantityStock;
@@ -528,6 +533,22 @@ function openEditItem(element, type, code) {
 		});
 	}
 }
+
+function deleteItem(element, type, code) {
+	element.parentElement.parentElement.remove();
+	fetch("/product/delete?code=" + code, {
+		method: 'DELETE',
+	})
+	.then(response => {
+        if(response.status === 200) {
+            alert("Xóa sản phẩm thành công!!");
+            location.replace("/manage");
+        } else {
+            alert("Xóa sản phẩm thất bại!!");
+            location.replace("/manage");
+        }
+    });
+}
 /*
 function getDataJSONFormAddPhoneTab(elementItem) {
 	var name = elementItem.children[0].children[2].children[1].value;
@@ -541,7 +562,7 @@ function getDataJSONFormAddPhoneTab(elementItem) {
 	var chip = elementItem.children[0].children[10].children[1].value;
 	var memory = elementItem.children[0].children[11].children[1].value;
 	var file = elementItem.children[0].children[12].children[1].value.split('\\')[2];
-	
+
 	var dataJSON = {
 		"name": name,
 		"code": code,
@@ -557,7 +578,6 @@ function getDataJSONFormAddPhoneTab(elementItem) {
 	}
 	return dataJSON;
 }
-
 function getDataJSONFormAddLaptop(elementItem) {
 	var name = elementItem.children[0].children[2].children[1].value;
 	var code = elementItem.children[0].children[3].children[1].value;
@@ -571,7 +591,7 @@ function getDataJSONFormAddLaptop(elementItem) {
 	var size = elementItem.children[0].children[11].children[1].value;
 	var memory = elementItem.children[0].children[12].children[1].value;
 	var file = elementItem.children[0].children[13].children[1].value.split('\\')[2];
-	
+
 	var dataJSON = {
 		"name": name,
 		"code": code,
@@ -587,8 +607,7 @@ function getDataJSONFormAddLaptop(elementItem) {
 		"file": 'http://localhost:8080/myspring/resources/images/images_shop/' + file
 	}
 	return dataJSON;
-}*/
-/*
+}
 function submitFormAddProduct(element, type) {
 	const elementItem = document.querySelector(".input_content.add." + type);
 	var dataJSON = null;
@@ -598,13 +617,12 @@ function submitFormAddProduct(element, type) {
 		dataJSON = getDataJSONFormAddLaptop(elementItem);
 	}
 	console.log(dataJSON);
-	fetch("/myspring/apimanage/product/add?line=" + type, { 
+	/!*fetch("/myspring/apimanage/product/add?line=" + type, {
 		method: 'POST',
 		headers: {
 		    'Content-Type': 'application/json; charset=UTF-8',
 		body: JSON.stringify(dataJSON),
-	})
-	.then(response => response.json())
+	}).then(response => response.json())
 	.then(data => {
 	  	console.log(data);
 		if(data == '1') {
@@ -614,10 +632,9 @@ function submitFormAddProduct(element, type) {
 			alert("Thêm sản phẩm thất bại!!");
 			location.reload();
 		}
-	});
+	});*!/
 }
-*/
-/*
+
 function submitFormEditProduct(element, type) {
 	const elementItem = document.querySelector(".input_content.edit." + type);
 	var id = elementItem.children[0].children[2].children[2].value;
@@ -630,7 +647,7 @@ function submitFormEditProduct(element, type) {
 		dataJSON.id = parseInt(id);
 	}
 	console.log(dataJSON);
-	fetch("/myspring/apimanage/product/edit?line=" + type, { 
+	fetch("/myspring/apimanage/product/edit?line=" + type, {
 		method: 'PUT',
 		headers: {
 		    'Content-Type': 'application/json',
@@ -649,23 +666,6 @@ function submitFormEditProduct(element, type) {
 		}
 	});
 }*/
-function deleteItem(element, type, code) {
-	element.parentElement.parentElement.remove();
-	fetch("/myspring/apimanage/product/delete?line=" + type + "&code=" + code, { 
-		method: 'GET',
-	})
-	.then(response => response.json())
-	.then(data => {
-	  	console.log(data);
-		if(data == '1') {
-			alert("Xóa sản phẩm thành công!!");
-			location.replace("/myspring/manage");
-		} else {
-			alert("Xóa sản phẩm thất bại!!");
-			location.replace("/myspring/manage");
-		}
-	});
-}
 //////////////////////////////////////////////////////////
 ////////////////ORDER//////////////////////////////////
 let checkUpdateCountPageOrders = 0;
@@ -673,7 +673,7 @@ let checkUpdateCountPageOrders = 0;
 function getUrlTableOrders(page) {
 	var start = (page-1)*10;
 	var end = page*10 -1;
-	return "/myspring/apimanage/orders?start="+start+"&end="+end;
+	return "/manage/orders?start="+start+"&end="+end;
 }
 
 function updateTableOrders(urlData) {
@@ -685,7 +685,6 @@ function updateTableOrders(urlData) {
 	        return resp.json();
 	    }
 	}).then(dataJSON => {
-		console.log(dataJSON.data);
 		let dataHTML = "";
 		for(var d of dataJSON.data) {
 			dataHTML += "									<tr>\r\n"
@@ -709,6 +708,7 @@ function updateTableOrders(urlData) {
 		}
 		document.querySelector("#datatable .orders").innerHTML = dataHTML;
 		if(checkUpdateCountPageOrders == 1) {
+		    console.log(dataJSON.countPage)
 			totalPage = dataJSON.countPage;
 			addPage(document.querySelector(".container-fluid.open .content_bot"), true, totalPage);
 		}
@@ -718,20 +718,20 @@ function updateTableOrders(urlData) {
 function deleteOrders(element, id) {
 	element.parentElement.parentElement.remove();
 	console.log(id);
-	fetch("/myspring/apimanage/orders/delete?id=" + id, { 
-		method: 'GET',
+	fetch("/orders?id=" + id, {
+		method: 'DELETE',
 	})
-	.then(response => response.json())
-	.then(data => {
-	  	console.log(data);
-		if(data == '1') {
-			alert("Xóa đơn hàng thành công!!");
-			location.replace("/myspring/manage");
-		} else {
-			alert("Xóa đơn hàng thất bại!!");
-			location.replace("/myspring/manage");
-		}
-	});
+	.then(response => {
+	    console.log(response.status)
+        if(response.status === 200) {
+            alert("Xóa đơn hàng thành công!!");
+            location.replace("/manage");
+        } else {
+            alert("Xóa đơn hàng thất bại!!");
+            location.replace("/manage");
+        }
+
+    });
 }
 
 function closeOrders(element) {
@@ -739,7 +739,7 @@ function closeOrders(element) {
 }
 
 function viewOrders(element, id) {
-	fetch("/myspring/apimanage/orders/view?id=" + id, { 
+	fetch("/manage/orders/view?id=" + id, {
 		method: 'GET',
 	})
 	.then(response => response.json())
@@ -777,7 +777,7 @@ let checkUpdateCountPageAccount = 0;
 function getUrlTableAccount(page) {
 	var start = (page-1)*10;
 	var end = page*10 -1;
-	return "/myspring/apimanage/account?start="+start+"&end="+end;
+	return "/manage/account?start="+start+"&end="+end;
 }
 
 function updateTableAccount(urlData) {
@@ -822,20 +822,18 @@ function updateTableAccount(urlData) {
 
 function deleteAccount(element, username) {
 	element.parentElement.parentElement.remove();
-	fetch("/myspring/apimanage/contact/delete?username=" + username, { 
-		method: 'GET',
+	fetch("/customer/delete?username=" + username, {
+		method: 'DELETE',
 	})
-	.then(response => response.json())
-	.then(data => {
-	  	console.log(data);
-		if(data == '1') {
-			alert("Xóa tài khoản thành công!!");
-			location.replace("/myspring/manage");
-		} else {
-			alert("Xóa tài khoản thất bại!!");
-			location.replace("/myspring/manage");
-		}
-	});
+	.then(response => {
+	    if(response.status === 200) {
+            alert("Xóa tài khoản thành công!!");
+            location.replace("/manage");
+        } else {
+            alert("Xóa tài khoản thất bại!!");
+            location.replace("/manage");
+        }
+    });
 }
 
 
@@ -846,7 +844,7 @@ function deleteAccount(element, username) {
 //////////////////////////////////////////NOTIFICATION///////////////////////////////////////////////////
 
 function test() {
-	fetch("/myspring/apimanage/notification", { 
+	fetch("/manage/notification", {
 		method: 'GET',
 	})
 	.then(response => response.json())

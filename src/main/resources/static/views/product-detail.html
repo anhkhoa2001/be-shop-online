@@ -71,22 +71,21 @@
                         <div class="zoom" id="zoom"></div>
                     </div>
 
-                    <div class="product-details__btn" >
+                    <div class="product-details__btn" style="justify-content: center">
                         <a class="add" href="#" onclick = "addToCart()">
-	                <span>
-	                  <svg>
-	                    <use xlink:href="<c:url value="/resources/images/sprite.svg#icon-cart-plus" />"></use>
-	                  </svg>
-	                </span>
+                            <span>
+                              <svg>
+                                <use xlink:href="../resources/images/sprite.svg#icon-cart-plus"></use>
+                              </svg>
+                            </span>
                             ADD TO CART
                         </a>
-
-                        <a class="buy" href="/home/checkout?code=${product.code }" >
-                <span>
-                  <svg>
-                    <use xlink:href="../resources/images/sprite.svg#icon-credit-card"></use>
-                  </svg>
-                </span>
+                        <a class="buy" th:if="${!isLog}" th:href="@{'/check-out?code=' + ${product.code}}" style="margin-left: 24px">
+                            <span>
+                              <svg>
+                                <use xlink:href="../resources/images/sprite.svg#icon-credit-card"></use>
+                              </svg>
+                            </span>
                             BUY NOW
                         </a>
                     </div>
@@ -96,7 +95,7 @@
                     <div class="product-detail__content">
                         <h3 th:text="${product.name }"></h3>
                         <div class="price">
-                            <span class="new__price" th:text="${product.priceDola }"></span>
+                            <span class="new__price" th:text="${product.price } + '$'"></span>
                         </div>
                         <div class="product__review">
                             <div class="rating">
@@ -298,8 +297,12 @@
 <!-- Animate On Scroll -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    let code = '${product.code}';
-    let username = "${dto.username}";
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+
+    const code = params.code;
+    const username =  '[[${dto.username}]]';
 </script>
 <script src="../resources/js/productdetails.js" ></script>
 </body>

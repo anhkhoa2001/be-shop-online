@@ -46,6 +46,20 @@ public class ATypeManagementFacade<DTO extends AItemDTO, MODEL extends AItemMode
         return null;
     }
 
+    public DTO update(DTO dtoWillBeCreate) {
+        try {
+            MODEL modelWillBeCreate = getDto2model().convert(dtoWillBeCreate);
+            if(Objects.nonNull(modelWillBeCreate)) {
+                getService().update(modelWillBeCreate);
+                return getModel2dto().convert(getService().getById(modelWillBeCreate.getId()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public List<DTO> getAll() {
         try {
             List<MODEL> modelCreateds = getService().getAll();

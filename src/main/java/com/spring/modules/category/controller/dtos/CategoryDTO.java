@@ -93,4 +93,17 @@ public class CategoryDTO extends AItemDTO {
     public void setSizeProduct(final int sizeProduct) {
         this.sizeProduct = sizeProduct;
     }
+
+    @Override
+    public String toString() {
+        return "CategoryDTO{" +
+                "type='" + type + '\'' +
+                ", line='" + line + '\'' +
+                ", logo='" + logo + '\'' +
+                ", productLineDTO=" + productLineDTO +
+                ", manufacturerDTO=" + manufacturerDTO +
+                ", categoryCode='" + categoryCode + '\'' +
+                ", sizeProduct=" + sizeProduct +
+                "} " + super.getId();
+    }
 }

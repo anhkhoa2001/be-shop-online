@@ -5,11 +5,14 @@ import com.spring.core.facades.impls.ATypeManagementFacade;
 import com.spring.core.model.AItemModel;
 import com.spring.core.response.EResponse;
 import com.spring.core.service.ATypeManagementService;
+import com.spring.modules.checkout.controllers.dtos.OrderDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,15 +84,14 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
             )}
     )
     @DeleteMapping
-    public int deleteById(@Parameter(in = ParameterIn.DEFAULT,required = true) @RequestBody String id) {
-        try {
-            long idL = Long.parseLong(id);
-
-            return getFacade().deleteById(idL);
+    public ResponseEntity<OrderDTO> deleteById(@RequestParam final long id) {
+        try{
+            getFacade().deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            return EResponse.ERROR_EX;
         }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Operation(
@@ -127,7 +129,7 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
             )}
     )
     @GetMapping("/get-by-code")
-    public DTO getByCode(@RequestParam(required = true) String code) {
+    public DTO getByCode(@RequestParam(required = true) final String code) {
         try {
             return getFacade().getByCode(code);
         } catch (Exception e) {

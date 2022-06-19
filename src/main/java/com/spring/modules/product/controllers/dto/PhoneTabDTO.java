@@ -2,6 +2,7 @@ package com.spring.modules.product.controllers.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.spring.modules.category.controller.dtos.CategoryDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
@@ -78,5 +79,33 @@ public class PhoneTabDTO extends ProductDTO {
 
     public PhoneTabDTO() {
         super.setType(PhoneTabDTO.DTO_NAME);
+    }
+
+    public PhoneTabDTO(final String code, final String name, final long price, final int quantity, final String image,
+                       final String display, final String frontCamera, final String backCamera, final String chip, final String memory, final String ram) {
+        super.setType(PhoneTabDTO.DTO_NAME);
+        super.setImage(image);
+        super.setName(name);
+        super.setPrice(price);
+        super.setCode(code);
+        super.setQuantityStock(quantity);
+        this.display = display;
+        this.frontCamera = frontCamera;
+        this.backCamera = backCamera;
+        this.chip = chip;
+        this.memory = memory;
+        this.ram = ram;
+    }
+
+    @Override
+    public String toString() {
+        return "PhoneTabDTO{" +
+                "display='" + display + '\'' +
+                ", frontCamera='" + frontCamera + '\'' +
+                ", backCamera='" + backCamera + '\'' +
+                ", chip='" + chip + '\'' +
+                ", memory='" + memory + '\'' +
+                ", ram='" + ram + '\'' +
+                "} " + super.toString();
     }
 }

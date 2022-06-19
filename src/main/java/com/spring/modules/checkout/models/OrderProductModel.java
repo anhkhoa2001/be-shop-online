@@ -2,6 +2,7 @@ package com.spring.modules.checkout.models;
 
 import com.spring.core.model.AItemModel;
 import com.spring.modules.category.model.CategoryModel;
+import com.spring.modules.checkout.controllers.dtos.OrderDTO;
 
 import javax.persistence.*;
 
@@ -9,18 +10,20 @@ import javax.persistence.*;
 @Table(name = "orderproduct")
 public class OrderProductModel extends AItemModel {
 
+    public static final String MODEL_NAME = "OrderProduct";
+
     @Basic
     private int quantity;
 
     @Basic
     private int total;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name="oid", nullable=false)
     private OrderModel orderModel;
 
-    @ManyToOne
-    @JoinColumn(name="cid", nullable=false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name="cid")
     private CategoryModel categoryModel;
 
     public int getQuantity() {
@@ -54,4 +57,13 @@ public class OrderProductModel extends AItemModel {
     public void setCategory(final CategoryModel categoryModel) {
         this.categoryModel = categoryModel;
     }
+
+    public OrderProductModel(String code, int quantity, int total) {
+        super();
+        super.setCode(code);
+        this.quantity = quantity;
+        this.total = total;
+    }
+
+    public OrderProductModel() {}
 }

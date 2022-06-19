@@ -111,7 +111,7 @@ public class PhoneTabFacade extends ATypeManagementFacade<PhoneTabDTO, PhoneTabM
             list2 = list;
         } else {
             for(PhoneTabDTO p : list) {
-                if(p.getPrice()/22 >= bot && p.getPrice()/22 <= top) {
+                if(p.getPrice() >= bot && p.getPrice() <= top) {
                     list2.add(p);
                 }
             }

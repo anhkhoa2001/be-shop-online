@@ -3,6 +3,7 @@ package com.spring.modules.checkout.facades.converter.dto2model;
 import com.spring.core.facades.converter.dto2model.ADTO2ModelConverter;
 import com.spring.modules.checkout.controllers.dtos.OrderDTO;
 import com.spring.modules.checkout.models.OrderModel;
+import com.spring.modules.checkout.services.OrderService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,11 +15,13 @@ import java.util.Objects;
 public class OrderDTO2OrderModelConverter extends ADTO2ModelConverter<OrderDTO, OrderModel> {
 
     private final OrderProductDTO2OrderProductModelConverter orderProductDTO2OrderProductModel;
+    private final OrderService orderService;
 
     @Autowired
-    public OrderDTO2OrderModelConverter(final OrderProductDTO2OrderProductModelConverter orderProductDTO2OrderProductModel) {
+    public OrderDTO2OrderModelConverter(final OrderProductDTO2OrderProductModelConverter orderProductDTO2OrderProductModel, final OrderService orderService) {
         super(new OrderModel());
         this.orderProductDTO2OrderProductModel = orderProductDTO2OrderProductModel;
+        this.orderService = orderService;
     }
 
     @Override
@@ -57,5 +60,9 @@ public class OrderDTO2OrderModelConverter extends ADTO2ModelConverter<OrderDTO, 
 
     public OrderProductDTO2OrderProductModelConverter getOrderProductDTO2OrderProductModel() {
         return orderProductDTO2OrderProductModel;
+    }
+
+    public OrderService getOrderService() {
+        return orderService;
     }
 }

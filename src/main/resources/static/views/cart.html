@@ -1,10 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap" rel="stylesheet" />
+
+    <!-- Animate On Scroll -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <!-- Custom StyleSheet -->
+    <link rel="stylesheet" href="../resources/css/cart.css" />
+    <link rel="stylesheet" href="../resources/css/all.min.css">
+
+    <title>Cart</title>
 </head>
 <body>
+<header id="header" class="header">
+    <div class="navigation" th:insert="header.html"></div>
 
+    <div class="page__title-area">
+        <div class="container">
+            <div class="page__title-container">
+                <ul class="page__titles">
+                    <li>
+                        <a href="/">
+                            <svg>
+                                <use xlink:href="../resources/images/sprite.svg#icon-home" ></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="page__title">Cart</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main">
+    <section class="section cart__area">
+        <div class="container">
+            <div class="responsive__cart-area">
+                <form class="cart__form">
+                    <div class="cart__table table-responsive">
+                        <table width="100%" class="table">
+                            <thead>
+                            <tr>
+                                <th>PRODUCT</th>
+                                <th>NAME</th>
+                                <th>PRICE</th>
+                                <th>TOTAL</th>
+                            </tr>
+                            </thead>
+                            <tbody id = "list-product">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="cart-btns">
+                        <div class="continue__shopping">
+                            <a href="/home">Continue Shopping</a>
+                        </div>
+                    </div>
+
+                    <div class="cart__totals">
+                        <h3>Cart Totals</h3>
+                        <ul>
+                            <li>
+                                Subtotal <span class="new__price" id = "sub__total">$250.99</span>
+                            </li>
+                            <li>
+                                Sale <span id = "sale">$0</span>
+                            </li>
+                            <li>
+                                Shipping <span id = "shipping">$0</span>
+                            </li>
+                            <li>
+                                Total <span class="new__price" id = "total">$250.99</span>
+                            </li>
+                        </ul>
+                        <a href = "/check-out" class = "check__out">PROCEED TO CHECKOUT</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer id="footer" class="section footer" th:insert="footer.html"></footer>
+
+<!-- Animate On Scroll -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    let username = '[[${dto.username}]]';
+    console.log(username);
+</script>
+<script src="../resources/js/cart.js"></script>
 </body>
 </html>

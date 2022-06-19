@@ -24,4 +24,8 @@ public class CustomerFacade extends ATypeManagementFacade<CustomerDTO, CustomerM
     public CustomerDTO getByUsername(final String username) {
         return getModel2dto().convert(getService().findByUsername(username));
     }
+
+    public void deleteByUsername(final String username) {
+        getService().deleteByUsername(username);
+    }
 }

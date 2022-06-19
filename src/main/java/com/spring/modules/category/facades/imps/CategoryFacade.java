@@ -35,4 +35,14 @@ public class CategoryFacade extends ATypeManagementFacade<CategoryDTO, CategoryM
         }
         return Collections.emptyList();
     }
+
+    //constain
+    public CategoryDTO findByCategoryCode(final String categoryCode) {
+        try {
+            return getModel2dto().convert(getService().findByCategoryCode(categoryCode));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

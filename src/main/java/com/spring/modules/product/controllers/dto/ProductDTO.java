@@ -36,7 +36,7 @@ public class ProductDTO extends AItemDTO {
     private CategoryDTO categoryDTO;
 
     public ProductDTO() {
-        this.setType(ProductLineDTO.DTO_NAME);
+        this.setType(ProductDTO.DTO_NAME);
     }
 
     public String getType() {
@@ -59,8 +59,8 @@ public class ProductDTO extends AItemDTO {
         return price;
     }
 
-    public String getPriceDola() {
-        return price/22 + "$";
+    public long getPriceDola() {
+        return price/22;
     }
 
     public void setPrice(final long price) {
@@ -89,5 +89,28 @@ public class ProductDTO extends AItemDTO {
 
     public void setCategoryDTO(final CategoryDTO categoryDTO) {
         this.categoryDTO = categoryDTO;
+    }
+
+    public ProductDTO(final String name, final String code, final long price,
+                      final int quantityStock, final String image, final CategoryDTO categoryDTO) {
+        this.setType(ProductDTO.DTO_NAME);
+        this.setCode(code);
+        this.name = name;
+        this.price = price;
+        this.quantityStock = quantityStock;
+        this.image = image;
+        this.categoryDTO = categoryDTO;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantityStock=" + quantityStock +
+                ", image='" + image + '\'' +
+                ", categoryDTO=" + categoryDTO +
+                "} " + super.toString();
     }
 }

@@ -2,6 +2,9 @@ package com.spring.core.response;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class EResponse {
 
     public static final int SUCCESS = 200;
@@ -30,5 +33,13 @@ public class EResponse {
 
     public static final int COUNT_TOP_CUSTOMER = 5;
     public static final int SIZE_TABLE_MANAGE = 10;
+
+    public static DateTimeFormatter day = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static DateTimeFormatter hour = DateTimeFormatter.ofPattern("hh:mm:ss");
+    public static LocalDate localDate = LocalDate.now();
+
+
+    public static final String FILE_PATH_UPLOAD_IMAGE = "C:\\Users\\ADMIN\\Desktop\\kho\\Spring-Boot\\be-shop-online\\src\\main\\resources\\static\\resources";
+    public static final String FILE_PATH_LOCAL_IMAGE = "http://localhost:8080/resources/uploads/";
 
 }

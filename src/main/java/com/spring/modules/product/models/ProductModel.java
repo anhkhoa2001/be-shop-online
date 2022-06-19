@@ -23,7 +23,7 @@ public class ProductModel extends AItemModel {
     @Basic
     private String image;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="cid", nullable=false)
     private CategoryModel category;
 

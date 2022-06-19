@@ -9,6 +9,8 @@ import java.util.Set;
 @Table(name = "orders")
 public class OrderModel extends AItemModel {
 
+    public static final String MODEL_NAME = "Order";
+
     @Basic
     private String name;
 
@@ -33,7 +35,7 @@ public class OrderModel extends AItemModel {
     @Basic
     private boolean status;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy="orderModel")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="orderModel", cascade = CascadeType.ALL)
     private Set<OrderProductModel> orderProducts;
 
     public String getName() {

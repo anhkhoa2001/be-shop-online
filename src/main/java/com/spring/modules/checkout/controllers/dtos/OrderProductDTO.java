@@ -23,6 +23,9 @@ public class OrderProductDTO extends AItemDTO {
     @Schema(example = "{...}")
     private CategoryDTO categoryDTO;
 
+    @Schema(example = "{...}")
+    private OrderDTO orderDTO;
+
     public int getQuantity() {
         return quantity;
     }
@@ -57,5 +60,32 @@ public class OrderProductDTO extends AItemDTO {
 
     public OrderProductDTO() {
         this.setType(OrderDTO.DTO_NAME);
+    }
+
+    public OrderProductDTO(String code, int quantity, int total) {
+        super();
+        this.setType(OrderProductDTO.DTO_NAME);
+        super.setCode(code);
+        this.quantity = quantity;
+        this.total = total;
+    }
+
+    public OrderDTO getOrderDTO() {
+        return orderDTO;
+    }
+
+    public void setOrderDTO(final OrderDTO orderDTO) {
+        this.orderDTO = orderDTO;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderProductDTO{" +
+                "type='" + type + '\'' +
+                ", quantity=" + quantity +
+                ", total=" + total +
+                ", categoryDTO=" + categoryDTO +
+                ", orderDTO=" + orderDTO +
+                "} " + super.toString();
     }
 }
