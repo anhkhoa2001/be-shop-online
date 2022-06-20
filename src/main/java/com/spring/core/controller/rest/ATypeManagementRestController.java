@@ -3,9 +3,7 @@ package com.spring.core.controller.rest;
 import com.spring.core.controller.dto.AItemDTO;
 import com.spring.core.facades.impls.ATypeManagementFacade;
 import com.spring.core.model.AItemModel;
-import com.spring.core.response.EResponse;
 import com.spring.core.service.ATypeManagementService;
-import com.spring.modules.checkout.controllers.dtos.OrderDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -13,10 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +35,7 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
             consumes = {"application/json"},
             produces = {"application/json"}
     )
-    public DTO create(@Parameter(in = ParameterIn.DEFAULT,required = true) @RequestBody DTO entity) {
+    public ResponseEntity<DTO> create(@Parameter(in = ParameterIn.DEFAULT,required = true) @RequestBody DTO entity) {
         if(Objects.nonNull(entity)) {
             if(StringUtils.isBlank(entity.getCode())) {
                 String code = getFacade().generatorCode(MODEL.MODEL_NAME);
@@ -48,10 +44,10 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
 
             DTO dtoCreated = getFacade().create(entity);
 
-            return dtoCreated;
+            return new ResponseEntity<>(dtoCreated, HttpStatus.OK);
         }
 
-        return null;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Operation(
@@ -59,17 +55,13 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
             description = "Get all list entity in the backend"
     )
     @GetMapping
-    public List<DTO> getAll() {
+    public ResponseEntity<List<DTO>> getAll() {
         try {
-            if(CollectionUtils.isEmpty(getFacade().getAll())) {
-                return Collections.emptyList();
-            } else {
-                return getFacade().getAll();
-            }
+            return new ResponseEntity<>(getFacade().getAll(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Operation(
@@ -84,14 +76,14 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
             )}
     )
     @DeleteMapping
-    public ResponseEntity<OrderDTO> deleteById(@RequestParam final long id) {
+    public ResponseEntity<DTO> deleteById(@RequestParam final long id) {
         try{
             getFacade().deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Operation(
@@ -106,15 +98,13 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
             )}
     )
     @GetMapping("/get-by-id")
-    public DTO getById(@RequestParam(required = true) String id) {
+    public ResponseEntity<DTO> getById(@RequestParam(required = true) long id) {
         try {
-            long idL = Long.parseLong(id);
-
-            return getFacade().getById(idL);
+            return new ResponseEntity<DTO>(getFacade().getById(id), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Operation(
@@ -129,13 +119,13 @@ public abstract class ATypeManagementRestController<DTO extends AItemDTO, MODEL 
             )}
     )
     @GetMapping("/get-by-code")
-    public DTO getByCode(@RequestParam(required = true) final String code) {
+    public ResponseEntity<DTO> getByCode(@RequestParam(required = true) final String code) {
         try {
-            return getFacade().getByCode(code);
+            return new ResponseEntity<DTO>(getFacade().getByCode(code), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     public FACADE getFacade() {

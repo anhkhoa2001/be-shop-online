@@ -36,7 +36,7 @@ function getData(data, key) {
 					+ "	                        </svg>\r\n"
 					+ "	                    </div>\r\n"
 					+ "	                    <div class=\"product__price\">\r\n"
-					+ "	                        <h4>$"+ d.priceDola +"</h4>\r\n"
+					+ "	                        <h4>$"+ d.price +"</h4>\r\n"
 					+ "	                    </div>\r\n"
 					+ "	                    <a href=\"/home/product-detail?code="+ d.code +"\"><button type=\"submit\" class=\"product__btn\">SHOP NOW</button></a>\r\n"
 					+ "	                </div>\r\n"

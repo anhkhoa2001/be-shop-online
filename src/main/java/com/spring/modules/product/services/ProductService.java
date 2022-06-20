@@ -1,6 +1,6 @@
 package com.spring.modules.product.services;
 
-import com.spring.core.response.EResponse;
+import com.spring.core.constain.FixedValue;
 import com.spring.core.service.ATypeManagementService;
 import com.spring.modules.product.models.ProductModel;
 import com.spring.modules.product.repositories.ProductRepository;
@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +47,7 @@ public class ProductService extends ATypeManagementService<ProductModel> {
         String fileName = null, name = null;
         try {
             byte[] bytes = file.getBytes();
-            String rootPath = EResponse.FILE_PATH_UPLOAD_IMAGE;
+            String rootPath = FixedValue.FILE_PATH_UPLOAD_IMAGE;
             File dir = new File(rootPath + File.separator + "uploads");
 
             if(!dir.exists()) {
@@ -63,9 +62,10 @@ public class ProductService extends ATypeManagementService<ProductModel> {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(saveFile));
                 stream.write(bytes);
                 stream.close();
-
+            } else {
+                System.out.println(1231);
             }
-            fileName = EResponse.FILE_PATH_LOCAL_IMAGE + name;
+            fileName = FixedValue.FILE_PATH_LOCAL_IMAGE + name;
         } catch (Exception e) {
             e.printStackTrace();
         }

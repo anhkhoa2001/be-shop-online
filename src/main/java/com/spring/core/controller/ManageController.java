@@ -1,7 +1,7 @@
 package com.spring.core.controller;
 
 import com.spring.modules.authentication.config.AuthenticationSystem;
-import com.spring.core.response.EResponse;
+import com.spring.core.constain.FixedValue;
 import com.spring.modules.authentication.controllers.dtos.CustomerDTO;
 import com.spring.modules.authentication.facades.ERole;
 import com.spring.modules.authentication.facades.imps.CustomerFacade;
@@ -42,7 +42,7 @@ public class ManageController {
             return "redirect:/login?status=401";
         } else {
             if(customerDTO.getRole().equals(ERole.ADMIN.toString())) {
-                String CurrentTime = EResponse.day.format(EResponse.localDate);
+                String CurrentTime = FixedValue.day.format(FixedValue.localDate);
                 List<OrderDTO> orderDTOByCurrentTime = getOrderFacade().getAllOrdersByCreated(CurrentTime);
                 int count = 0, totalQuantity = 0, totalPrice = 0,countNoti = 0;
                 try {

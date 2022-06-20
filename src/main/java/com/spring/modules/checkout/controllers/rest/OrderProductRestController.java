@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/order-product")
-public class OrderProductController extends ATypeManagementRestController<OrderProductDTO, OrderProductModel, OrderProductService, OrderProductFacade> {
+public class OrderProductRestController extends ATypeManagementRestController<OrderProductDTO, OrderProductModel, OrderProductService, OrderProductFacade> {
 
-    protected OrderProductController(final OrderProductFacade facade) {
+    protected OrderProductRestController(final OrderProductFacade facade) {
         super(facade);
     }
 }

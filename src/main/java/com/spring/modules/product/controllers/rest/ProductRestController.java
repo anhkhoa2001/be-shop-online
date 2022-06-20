@@ -1,7 +1,6 @@
 package com.spring.modules.product.controllers.rest;
 
 import com.spring.core.controller.rest.ATypeManagementRestController;
-import com.spring.core.response.EResponse;
 import com.spring.modules.product.controllers.dto.LaptopDTO;
 import com.spring.modules.product.controllers.dto.PhoneTabDTO;
 import com.spring.modules.product.controllers.dto.ProductDTO;
@@ -24,24 +23,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/product")
-public class ProductController extends ATypeManagementRestController<ProductDTO, ProductModel, ProductService, ProductFacade> {
+public class ProductRestController extends ATypeManagementRestController<ProductDTO, ProductModel, ProductService, ProductFacade> {
 
     private final LaptopFacade laptopFacade;
     private final PhoneTabFacade phoneTabFacade;
 
-    private final ProductService productService;
-
     @Autowired
-    protected ProductController(final ProductFacade facade, final LaptopFacade laptopFacade, final PhoneTabFacade phoneTabFacade, final ProductService productService) {
+    protected ProductRestController(final ProductFacade facade, final LaptopFacade laptopFacade, final PhoneTabFacade phoneTabFacade) {
         super(facade);
         this.laptopFacade = laptopFacade;
         this.phoneTabFacade = phoneTabFacade;
-        this.productService = productService;
     }
 
     @PutMapping(value = "/view-cart")
     @ResponseBody
-    public List<ProductDTO> homeCart(@RequestBody String data) {
+    public ResponseEntity<List<ProductDTO>> homeCart(@RequestBody String data) {
         List<ProductDTO> productDTOS = new ArrayList<>();
         List<String> codes = new ArrayList<>();
         JSONParser parser = new JSONParser();
@@ -69,12 +65,12 @@ public class ProductController extends ATypeManagementRestController<ProductDTO,
                 }
             }
 
-            return productDTOS;
+            return new ResponseEntity<>(productDTOS, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return Collections.emptyList();
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(value = "/delete")
@@ -86,18 +82,6 @@ public class ProductController extends ATypeManagementRestController<ProductDTO,
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/test/update")
-    public void update() {
-        List<ProductModel> products = productService.getAll();
-        products.forEach(e -> {
-            e.setPrice(e.getPrice()/ EResponse.DOLA);
-        });
-
-        for(ProductModel productDTO:products) {
-            productService.update(productDTO);
         }
     }
 

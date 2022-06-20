@@ -1,6 +1,6 @@
 package com.spring.modules.checkout.controllers.rest;
 
-import com.spring.core.response.EResponse;
+import com.spring.core.constain.FixedValue;
 import com.spring.modules.authentication.controllers.dtos.CustomerDTO;
 import com.spring.modules.authentication.facades.ERole;
 import com.spring.modules.authentication.facades.imps.CustomerFacade;
@@ -18,10 +18,17 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -119,7 +126,7 @@ public class ManagementRestController {
     @ResponseBody
     public List<OrderDTO> apiManageTabletTwo() {
         try {
-            return getOrderFacade().getOrderLimit(EResponse.COUNT_TOP_CUSTOMER);
+            return getOrderFacade().getOrderLimit(FixedValue.COUNT_TOP_CUSTOMER);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -132,7 +139,7 @@ public class ManagementRestController {
     @ResponseBody
     public String apiManageTabletThree() {
         try {
-            Map<String, Integer> map = getOrderProductFacade().getOrderProductLimit(EResponse.COUNT_TOP_CUSTOMER);
+            Map<String, Integer> map = getOrderProductFacade().getOrderProductLimit(FixedValue.COUNT_TOP_CUSTOMER);
             JSONArray jsonArray = new JSONArray();
 
             Set<Entry<String, Integer>> set = map.entrySet();
@@ -144,7 +151,7 @@ public class ManagementRestController {
                 }
             });
 
-            list = list.subList(0, EResponse.COUNT_TOP_CUSTOMER);
+            list = list.subList(0, FixedValue.COUNT_TOP_CUSTOMER);
 
             for(Entry<String, Integer> entry : list) {
                 String code = entry.getKey();
@@ -168,7 +175,7 @@ public class ManagementRestController {
                 jsonObject.put("quantity", quantity);
                 jsonObject.put("name", product.getName());
                 jsonObject.put("image", product.getImage());
-                jsonObject.put("price", product.getPriceDola());
+                jsonObject.put("price", product.getPrice());
                 jsonArray.add(jsonObject);
             }
 
@@ -202,8 +209,8 @@ public class ManagementRestController {
                 productDTOS = productDTOStwo;
             }
 
-            int countPage = productDTOS.size()%EResponse.SIZE_TABLE_MANAGE == 0 ?
-                    productDTOS.size()/EResponse.SIZE_TABLE_MANAGE : productDTOS.size()/EResponse.SIZE_TABLE_MANAGE + 1;
+            int countPage = productDTOS.size()% FixedValue.SIZE_TABLE_MANAGE == 0 ?
+                    productDTOS.size()/ FixedValue.SIZE_TABLE_MANAGE : productDTOS.size()/ FixedValue.SIZE_TABLE_MANAGE + 1;
             List<ProductDTO> productDTOStwo = new ArrayList<>();
             end = (end >= productDTOS.size()) ? productDTOS.size() - 1 : end;
             for(int i=start; i<=end; i++) {
@@ -220,7 +227,7 @@ public class ManagementRestController {
                 jsonObject2.put("line", productDTOStwo.get(i).getCategoryDTO().getLine());
                 jsonObject2.put("lineCatemenu", productDTOStwo.get(i).getCategoryDTO().getProductLineDTO().getLine().toLowerCase());
                 jsonObject2.put("quantity", productDTOStwo.get(i).getQuantityStock());
-                jsonObject2.put("price", productDTOStwo.get(i).getPriceDola());
+                jsonObject2.put("price", productDTOStwo.get(i).getPrice());
                 jsonArray.add(jsonObject2);
             }
             jsonObject.put("data", jsonArray);
@@ -238,8 +245,8 @@ public class ManagementRestController {
     public String apiManageOrder(@RequestParam int end, @RequestParam int start) {
         try {
             List<OrderDTO> orderDTOS = getOrderFacade().getAll();
-            int countPage = orderDTOS.size()%EResponse.SIZE_TABLE_MANAGE == 0 ?
-                    orderDTOS.size()/EResponse.SIZE_TABLE_MANAGE : orderDTOS.size()/EResponse.SIZE_TABLE_MANAGE + 1;
+            int countPage = orderDTOS.size()% FixedValue.SIZE_TABLE_MANAGE == 0 ?
+                    orderDTOS.size()/ FixedValue.SIZE_TABLE_MANAGE : orderDTOS.size()/ FixedValue.SIZE_TABLE_MANAGE + 1;
             List<OrderDTO> orderDTOS2 = new ArrayList<>();
             end = (end >= orderDTOS.size()) ? orderDTOS.size() - 1 : end;
             orderDTOS2 = orderDTOS.subList(start, end+1);
@@ -295,8 +302,8 @@ public class ManagementRestController {
             }
         }
 
-        int countPage = customerDTOSByRole.size()%EResponse.SIZE_TABLE_MANAGE == 0 ?
-                customerDTOSByRole.size()/EResponse.SIZE_TABLE_MANAGE : customerDTOSByRole.size()/EResponse.SIZE_TABLE_MANAGE + 1;
+        int countPage = customerDTOSByRole.size()% FixedValue.SIZE_TABLE_MANAGE == 0 ?
+                customerDTOSByRole.size()/ FixedValue.SIZE_TABLE_MANAGE : customerDTOSByRole.size()/ FixedValue.SIZE_TABLE_MANAGE + 1;
 
         List<CustomerDTO> customerDTOSByEndAndStart = new ArrayList<>();
         end = (end >= customerDTOS.size()) ? customerDTOS.size() - 1 : end;
@@ -385,6 +392,21 @@ public class ManagementRestController {
         }
 
         return Collections.emptyList();
+    }
+
+    @GetMapping("/image/upload/{photo}")
+    @ResponseBody
+    public ResponseEntity<ByteArrayResource> getImage(@PathVariable("photo") String photo) {
+        try {
+            Path path = Paths.get(FixedValue.FILE_PATH_UPLOAD_IMAGE + "/uploads", photo);
+            byte[] buffer = Files.readAllBytes(path);
+            ByteArrayResource byteArrayResource = new ByteArrayResource(buffer);
+            return ResponseEntity.ok().contentLength(buffer.length).contentType(MediaType.parseMediaType("image/png"))
+                    .body(byteArrayResource);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 

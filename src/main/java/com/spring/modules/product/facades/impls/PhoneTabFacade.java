@@ -3,7 +3,7 @@ package com.spring.modules.product.facades.impls;
 import com.spring.core.facades.converter.dto2model.ADTO2ModelConverter;
 import com.spring.core.facades.converter.model2dto.AModel2DTOConverter;
 import com.spring.core.facades.impls.ATypeManagementFacade;
-import com.spring.core.response.EResponse;
+import com.spring.core.constain.FixedValue;
 import com.spring.modules.product.controllers.dto.PhoneTabDTO;
 import com.spring.modules.product.models.PhoneTabModel;
 import com.spring.modules.product.services.PhoneTabService;
@@ -75,9 +75,9 @@ public class PhoneTabFacade extends ATypeManagementFacade<PhoneTabDTO, PhoneTabM
 
             return phoneTabs.subList(0, count);
         } else {
-            if(phoneTabs.size() > EResponse.COUNT_PRODUCT_LOAD) {
+            if(phoneTabs.size() > FixedValue.COUNT_PRODUCT_LOAD) {
                 model.addAttribute("loadmore", true);
-                return phoneTabs.subList(0, EResponse.COUNT_PRODUCT_LOAD);
+                return phoneTabs.subList(0, FixedValue.COUNT_PRODUCT_LOAD);
             } else {
                 return phoneTabs;
             }

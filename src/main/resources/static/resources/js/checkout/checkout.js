@@ -263,7 +263,7 @@ function update(data) {
 					+ "	                                <td class=\"product-detail\" data-title=\"Product Detail\">\r\n"
 					+ "	                                    <div style=\"margin-left: 24px\">\r\n"
 					+ "	                                        <a href=\"#\">"+ d.name +"</a>\r\n"
-					+ "	                                        <span>$ "+ d.price +"</span>\r\n"
+					+ "	                                        <span>"+ d.price +" $</span>\r\n"
 					+ "	                                    </div>\r\n"
 					+ "	                                </td>\r\n"
 					+ "	                                <td class=\"product-quantity\" data-title=\"Quantity\">\r\n"

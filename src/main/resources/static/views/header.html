@@ -98,8 +98,8 @@
             return undefined;
         }
     }).then(data => {
+        customer = data;
         if(data === undefined) {
-            document.querySelector(".cart_total").innerHTML = 0;
         } else {
             document.querySelector(".cart_total").innerHTML = getAllProductInLocalStorage(data.username).length;
         }

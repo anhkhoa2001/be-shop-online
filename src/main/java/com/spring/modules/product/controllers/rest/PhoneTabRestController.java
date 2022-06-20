@@ -1,12 +1,10 @@
 package com.spring.modules.product.controllers.rest;
 
 import com.spring.core.controller.rest.ATypeManagementRestController;
-import com.spring.core.response.EResponse;
+import com.spring.core.constain.FixedValue;
 import com.spring.modules.category.controller.dtos.CategoryDTO;
 import com.spring.modules.category.facades.imps.CategoryFacade;
-import com.spring.modules.product.controllers.dto.LaptopDTO;
 import com.spring.modules.product.controllers.dto.PhoneTabDTO;
-import com.spring.modules.product.controllers.dto.ProductDTO;
 import com.spring.modules.product.facades.impls.PhoneTabFacade;
 import com.spring.modules.product.facades.impls.ProductFacade;
 import com.spring.modules.product.models.PhoneTabModel;
@@ -31,13 +29,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/phone-tab")
-public class PhoneTabController extends ATypeManagementRestController<PhoneTabDTO, PhoneTabModel, PhoneTabService, PhoneTabFacade> {
+public class PhoneTabRestController extends ATypeManagementRestController<PhoneTabDTO, PhoneTabModel, PhoneTabService, PhoneTabFacade> {
 
     private final ProductFacade productFacade;
     private final CategoryFacade categoryFacade;
 
     @Autowired
-    protected PhoneTabController(final PhoneTabFacade facade, final ProductFacade productFacade, final CategoryFacade categoryFacade) {
+    protected PhoneTabRestController(final PhoneTabFacade facade, final ProductFacade productFacade, final CategoryFacade categoryFacade) {
         super(facade);
         this.productFacade = productFacade;
         this.categoryFacade = categoryFacade;
@@ -52,7 +50,7 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
         try {
             final String code = request.getParameter("code");
             final CategoryDTO categoryDTO = getCategoryFacade().findByCategoryCode(code);
-            if(categoryDTO.getProductLineDTO().getId() != EResponse.CMID_LAPTOP) {
+            if(categoryDTO.getProductLineDTO().getId() != FixedValue.CMID_LAPTOP) {
                 final String name = request.getParameter("name");
                 final int quantity = Integer.parseInt(request.getParameter("quantity"));
                 final int price = Integer.parseInt(request.getParameter("price"));
@@ -89,7 +87,7 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
         try {
             final String code = request.getParameter("code");
             final CategoryDTO categoryDTO = getCategoryFacade().findByCategoryCode(code);
-            if(categoryDTO.getProductLineDTO().getId() != EResponse.CMID_LAPTOP) {
+            if(categoryDTO.getProductLineDTO().getId() != FixedValue.CMID_LAPTOP) {
                 PhoneTabDTO phoneTabDTO = getFacade().getByCode(code);
                 final String name = request.getParameter("name");
                 final int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -102,7 +100,7 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
                 final String memory = request.getParameter("memory");
                 phoneTabDTO.setName(name);
                 phoneTabDTO.setQuantityStock(quantity);
-                phoneTabDTO.setPrice((long) price *EResponse.DOLA);
+                phoneTabDTO.setPrice((long) price);
                 phoneTabDTO.setDisplay(display);
                 phoneTabDTO.setChip(chip);
                 phoneTabDTO.setRam(ram);
@@ -127,13 +125,14 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
             description = "Get list phone by count and type in the backend"
     )
     @GetMapping("/phone/get-by")
-    public List<PhoneTabDTO> getPhoneByCountAndType(@RequestParam int count, @RequestParam String type, Model model) {
+    public ResponseEntity<List<PhoneTabDTO>> getPhoneByCountAndType(@RequestParam int count, @RequestParam String type, Model model) {
         try {
-            return getFacade().getByCountAndTypeAndCmID(count, type, EResponse.CMID_PHONE, model);
+            return new ResponseEntity<>(getFacade().getByCountAndTypeAndCmID(count, type, FixedValue.CMID_PHONE, model), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Collections.emptyList();
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Operation(
@@ -141,13 +140,13 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
             description = "Get list tablet by count and type in the backend"
     )
     @GetMapping("/tablet/get-by")
-    public List<PhoneTabDTO> getTabletByCountAndType(@RequestParam int count, @RequestParam String type, Model model) {
+    public ResponseEntity<List<PhoneTabDTO>> getTabletByCountAndType(@RequestParam int count, @RequestParam String type, Model model) {
         try {
-            return getFacade().getByCountAndTypeAndCmID(count, type, EResponse.CMID_TABLET, model);
+            return new ResponseEntity<>(getFacade().getByCountAndTypeAndCmID(count, type, FixedValue.CMID_TABLET, model), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Collections.emptyList();
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Operation(
@@ -156,26 +155,26 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
     )
     @PutMapping(value = "/phone")
     @ResponseBody
-    public List<PhoneTabDTO> homePutPhoneTab(HttpServletRequest request, @RequestBody String data) {
+    public ResponseEntity<List<PhoneTabDTO>> homePutPhoneTab(@RequestBody String data, Model model) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(data);
-            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, 1);
+            final List<PhoneTabDTO> phoneTabDTOS = getFacade().filterPhoneTab(json, 1);
             int count = ((Long) json.get("count")).intValue();
-            if(list3.size() > count) {
-                List<PhoneTabDTO> list4 = new ArrayList<>();
-                for(int i=0; i<count; i++) {
-                    list4.add(list3.get(i));
-                }
-                return list4;
+            List<PhoneTabDTO> phoneResp = new ArrayList<>();
+            if(phoneTabDTOS.size() > count) {
+                model.addAttribute("loadmore", true);
+                phoneResp = phoneTabDTOS.subList(0, count);
             } else {
-                return list3;
+                phoneResp = phoneTabDTOS;
             }
+
+            return new ResponseEntity<>(phoneResp, HttpStatus.OK);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return Collections.emptyList();
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Operation(
@@ -184,18 +183,18 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
     )
     @PutMapping(value = "/phone/size")
     @ResponseBody
-    public int sizePhone(HttpServletRequest request, @RequestBody String data) {
+    public ResponseEntity<Integer> sizePhone(HttpServletRequest request, @RequestBody String data) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(data);
-            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, EResponse.CMID_PHONE);
+            List<PhoneTabDTO> phoneTabDTOS = getFacade().filterPhoneTab(json, FixedValue.CMID_PHONE);
 
-            return list3.size();
+            return new ResponseEntity<>(phoneTabDTOS.size(), HttpStatus.OK);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return 0;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Operation(
@@ -204,27 +203,26 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
     )
     @PutMapping(value = "/tablet")
     @ResponseBody
-    public List<PhoneTabDTO> homePutTablet(HttpServletRequest request, @RequestBody String data, Model model) {
+    public ResponseEntity<List<PhoneTabDTO>> homePutTablet(HttpServletRequest request, @RequestBody String data, Model model) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(data);
-            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, EResponse.CMID_TABLET);
+            List<PhoneTabDTO> tabletDTOS = getFacade().filterPhoneTab(json, FixedValue.CMID_TABLET);
             int count = ((Long) json.get("count")).intValue();
-            if(list3.size() > count) {
+            List<PhoneTabDTO> tabletResp = new ArrayList<>();
+            if(tabletDTOS.size() > count) {
                 model.addAttribute("loadmore", true);
-                List<PhoneTabDTO> list4 = new ArrayList<>();
-                for(int i=0; i<count; i++) {
-                    list4.add(list3.get(i));
-                }
-                return list4;
+                tabletResp = tabletDTOS.subList(0, count);
             } else {
-                return list3;
+                tabletResp = tabletDTOS;
             }
+
+            return new ResponseEntity<>(tabletResp, HttpStatus.OK);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return Collections.emptyList();
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Operation(
@@ -233,18 +231,18 @@ public class PhoneTabController extends ATypeManagementRestController<PhoneTabDT
     )
     @PutMapping(value = "/tablet/size")
     @ResponseBody
-    public int sizeTablet(HttpServletRequest request, @RequestBody String data) {
+    public ResponseEntity<Integer> sizeTablet(@RequestBody String data) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(data);
-            List<PhoneTabDTO> list3 = getFacade().filterPhoneTab(json, EResponse.CMID_TABLET);
+            List<PhoneTabDTO> tabletDTOS = getFacade().filterPhoneTab(json, FixedValue.CMID_TABLET);
 
-            return list3.size();
+            return new ResponseEntity<>(tabletDTOS.size(), HttpStatus.OK);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return 0;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     public ProductFacade getProductFacade() {

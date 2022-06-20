@@ -74,9 +74,9 @@ fetch("/manage/table/one", {
 	for(var d of dataJSON) {
 		dataHTML += "								<tr>\r\n"
 		+ "	                                            <td>"+ d.device +"</td>\r\n"
-		+ "	                                            <td class=\"text-end\">"+ d.total +"</td>\r\n"
+		+ "	                                            <td class=\"text-end\">"+ d.total +"$</td>\r\n"
 		+ "	                                            <td class=\"text-end\">"+ d.quantity +"</td>\r\n"
-		+ "	                                            <td class=\"text-end\">"+ d.avg +"</td>\r\n"
+		+ "	                                            <td class=\"text-end\">"+ d.avg +"$</td>\r\n"
 		+ "	                                        </tr>";
 	}
 	document.querySelector(".table.one tbody").innerHTML = dataHTML;
@@ -96,7 +96,7 @@ fetch("/manage/table/two", {
 		+ "                                                <td>"+ d.name +"</td>\r\n"
 		+ "                                                <td>"+ d.email +"</td>\r\n"
 		+ "                                                <td>"+ d.quantity +"</td>\r\n"
-		+ "                                                <td>"+ d.total +"</td>\r\n"
+		+ "                                                <td>"+ d.total +"$</td>\r\n"
 		+ "                                                <td>"+ d.created +"</td>\r\n"
 		+ "                                            </tr> ";
 	}
@@ -116,7 +116,7 @@ fetch("/manage/table/three", {
 		dataHTML += "									<tr>\r\n"
 	    + "                                                <td><img src=\""+ d.image +"\" height=\"16\" class=\"me-2\" >"+ d.name +"</td>\r\n"
 	    + "                                                <td>"+ d.code +"</td>     \r\n"
-	    + "                                                <td>$"+ d.price +"</td>      \r\n"
+	    + "                                                <td>"+ d.price +"$</td>      \r\n"
 	    + "                                                <td>"+ d.quantity +"</td>\r\n"
 	    + "                                            </tr>";
 	}
@@ -416,7 +416,7 @@ function updateTableProduct(urlData) {
 		   + "	                                    </td>\r\n"
 		   + "	                                    <td>"+ d.line +"</td>\r\n"
 		   + "	                                    <td>"+ d.quantity +"</td>\r\n"
-		   + "	                                    <td>$"+ d.price +"</td>\r\n"
+		   + "	                                    <td>"+ d.price +"$</td>\r\n"
 		   + "	                                    <td><span class=\"badge badge-soft-warning\">Stock</span></td>\r\n"
 		   + "	                                    <td>\r\n"
 		   + "	                                        <ul class=\"list-inline mb-0\">\r\n"
@@ -501,7 +501,7 @@ function openEditItem(element, type, code) {
 			elementItem.children[0].children[2].children[1].value = data.name;
 			elementItem.children[0].children[2].children[2].value = data.id;
 			elementItem.children[0].children[3].children[1].value = data.code;
-			elementItem.children[0].children[4].children[1].value = data.priceDola;
+			elementItem.children[0].children[4].children[1].value = data.price;
 			elementItem.children[0].children[5].children[1].value = data.quantityStock;
 			elementItem.children[0].children[6].children[1].value = data.display;
 			elementItem.children[0].children[7].children[1].value = data.frontCamera;
@@ -520,7 +520,7 @@ function openEditItem(element, type, code) {
 			elementItem.children[0].children[2].children[1].value = data.name;
 			elementItem.children[0].children[2].children[2].value = data.id;
 			elementItem.children[0].children[3].children[1].value = data.code;
-			elementItem.children[0].children[4].children[1].value = data.priceDola;
+			elementItem.children[0].children[4].children[1].value = data.price;
 			elementItem.children[0].children[5].children[1].value = data.quantityStock;
 			elementItem.children[0].children[6].children[1].value = data.display;
 			elementItem.children[0].children[7].children[1].value = data.card;
@@ -542,10 +542,8 @@ function deleteItem(element, type, code) {
 	.then(response => {
         if(response.status === 200) {
             alert("Xóa sản phẩm thành công!!");
-            location.replace("/manage");
         } else {
             alert("Xóa sản phẩm thất bại!!");
-            location.replace("/manage");
         }
     });
 }
@@ -697,7 +695,7 @@ function updateTableOrders(urlData) {
 					+ "		                                        </p>\r\n"
 					+ "		                                    </td>\r\n"
 					+ "	                                        <td>"+ d.quantity +"</td>\r\n"
-					+ "	                                        <td>$"+ d.price +"</td>\r\n"
+					+ "	                                        <td>"+ d.price +"$</td>\r\n"
 					+ "	                                        <td>Checkout</td>\r\n"
 					+ "	                                        <td>"+ d.created +"</td>\r\n"
 					+ "	                                        <td>\r\n"
@@ -725,10 +723,8 @@ function deleteOrders(element, id) {
 	    console.log(response.status)
         if(response.status === 200) {
             alert("Xóa đơn hàng thành công!!");
-            location.replace("/manage");
         } else {
             alert("Xóa đơn hàng thất bại!!");
-            location.replace("/manage");
         }
 
     });
@@ -828,10 +824,8 @@ function deleteAccount(element, username) {
 	.then(response => {
 	    if(response.status === 200) {
             alert("Xóa tài khoản thành công!!");
-            location.replace("/manage");
         } else {
             alert("Xóa tài khoản thất bại!!");
-            location.replace("/manage");
         }
     });
 }

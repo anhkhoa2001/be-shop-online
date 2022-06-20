@@ -1,11 +1,10 @@
 package com.spring.modules.product.controllers.rest;
 
 import com.spring.core.controller.rest.ATypeManagementRestController;
-import com.spring.core.response.EResponse;
+import com.spring.core.constain.FixedValue;
 import com.spring.modules.category.controller.dtos.CategoryDTO;
 import com.spring.modules.category.facades.imps.CategoryFacade;
 import com.spring.modules.product.controllers.dto.LaptopDTO;
-import com.spring.modules.product.controllers.dto.PhoneTabDTO;
 import com.spring.modules.product.facades.impls.LaptopFacade;
 import com.spring.modules.product.facades.impls.ProductFacade;
 import com.spring.modules.product.models.LaptopModel;
@@ -21,19 +20,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequestMapping("/laptop")
-public class LaptopController extends ATypeManagementRestController<LaptopDTO, LaptopModel, LaptopService, LaptopFacade> {
+public class LaptopRestController extends ATypeManagementRestController<LaptopDTO, LaptopModel, LaptopService, LaptopFacade> {
 
     private final ProductFacade productFacade;
     private final CategoryFacade categoryFacade;
 
-    protected LaptopController(final LaptopFacade facade, final ProductFacade productFacade, final CategoryFacade categoryFacade) {
+    protected LaptopRestController(final LaptopFacade facade, final ProductFacade productFacade, final CategoryFacade categoryFacade) {
         super(facade);
         this.productFacade = productFacade;
         this.categoryFacade = categoryFacade;
@@ -51,7 +48,7 @@ public class LaptopController extends ATypeManagementRestController<LaptopDTO, L
         try {
             final String code = request.getParameter("code");
             final CategoryDTO categoryDTO = getCategoryFacade().findByCategoryCode(code);
-            if(categoryDTO.getProductLineDTO().getId() == EResponse.CMID_LAPTOP) {
+            if(categoryDTO.getProductLineDTO().getId() == FixedValue.CMID_LAPTOP) {
                 final String name = request.getParameter("name");
                 final int quantity = Integer.parseInt(request.getParameter("quantity"));
                 final int price = Integer.parseInt(request.getParameter("price"));
@@ -59,7 +56,7 @@ public class LaptopController extends ATypeManagementRestController<LaptopDTO, L
                 final String card = request.getParameter("card");
                 final String ram = request.getParameter("ram");
                 final String cpu = request.getParameter("cpu");
-                final float weight = Float.parseFloat(request.getParameter("weight"));
+                final float weight = Strings.isBlank(request.getParameter("weight")) ? 0 : Float.parseFloat(request.getParameter("weight"));
                 final String size = request.getParameter("size");
                 final String memory = request.getParameter("memory");
                 final String image = getProductFacade().uploadFile(file);
@@ -90,7 +87,7 @@ public class LaptopController extends ATypeManagementRestController<LaptopDTO, L
         try {
             final String code = request.getParameter("code");
             final CategoryDTO categoryDTO = getCategoryFacade().findByCategoryCode(code);
-            if(categoryDTO.getProductLineDTO().getId() == EResponse.CMID_LAPTOP) {
+            if(categoryDTO.getProductLineDTO().getId() == FixedValue.CMID_LAPTOP) {
                 LaptopDTO laptopDTO = getFacade().getByCode(code);
                 final String name = request.getParameter("name");
                 final int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -104,7 +101,7 @@ public class LaptopController extends ATypeManagementRestController<LaptopDTO, L
                 final String memory = request.getParameter("memory");
                 laptopDTO.setName(name);
                 laptopDTO.setQuantityStock(quantity);
-                laptopDTO.setPrice((long) price *EResponse.DOLA);
+                laptopDTO.setPrice((long) price);
                 laptopDTO.setDisplay(display);
                 laptopDTO.setWeight(weight);
                 laptopDTO.setSize(size);
@@ -114,8 +111,6 @@ public class LaptopController extends ATypeManagementRestController<LaptopDTO, L
                 laptopDTO.setMemory(memory);
                 laptopDTO.setCategoryDTO(categoryDTO);
                 laptopDTO.setImage(!Strings.isBlank(image) ? image : laptopDTO.getImage());
-                System.out.println(image);
-                System.out.println(laptopDTO.getImage());
 
                 return ResponseEntity.ok(getFacade().update(laptopDTO));
             }
@@ -133,45 +128,45 @@ public class LaptopController extends ATypeManagementRestController<LaptopDTO, L
     )
     @GetMapping("/item/get-by")
     @ResponseBody
-    public List<LaptopDTO> getByCountAndType(@RequestParam int count, @RequestParam String type, Model model) {
+    public ResponseEntity<List<LaptopDTO>> getByCountAndType(@RequestParam int count, @RequestParam String type, Model model) {
         try {
-            return getFacade().getByCountAndType(count, type, model);
+            return new ResponseEntity<>(getFacade().getByCountAndType(count, type, model), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Collections.emptyList();
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/item/size")
     @ResponseBody
-    public int sizeLaptop(HttpServletRequest request, @RequestBody String data) {
+    public ResponseEntity<Integer> sizeLaptop(@RequestBody String data) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(data);
 
-            return getFacade().filterLaptop(json).size();
+            return new ResponseEntity<>(getFacade().filterLaptop(json).size(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return 0;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/item")
     @ResponseBody
-    public List<LaptopDTO> homePutLaptop(HttpServletRequest request, @RequestBody String data, Model model) {
+    public ResponseEntity<List<LaptopDTO>> homePutLaptop(HttpServletRequest request, @RequestBody String data, Model model) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(data);
             List<LaptopDTO> laptops = getFacade().filterLaptop(json);
             int count = ((Long) json.get("count")).intValue();
-
-            return laptops.size() > count ? laptops.subList(0, count) : laptops;
+            List<LaptopDTO> laptopsResp = laptops.size() > count ? laptops.subList(0, count) : laptops;
+            return new ResponseEntity<>(laptopsResp, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return Collections.emptyList();
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     public ProductFacade getProductFacade() {

@@ -188,6 +188,9 @@ Navigation
   background-color: white;
   text-transform: none;
 }
+.nav__list .nav__dropdown li a{
+  color: black;
+}
 .nav__list .nav__dropdown li:hover {
   background-color: #f4f4f4;
 }

@@ -1,11 +1,9 @@
-package com.spring.core.response;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+package com.spring.core.constain;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class EResponse {
+public class FixedValue {
 
     public static final int SUCCESS = 200;
     public static final int FAILED = 404;
@@ -40,6 +38,6 @@ public class EResponse {
 
 
     public static final String FILE_PATH_UPLOAD_IMAGE = "C:\\Users\\ADMIN\\Desktop\\kho\\Spring-Boot\\be-shop-online\\src\\main\\resources\\static\\resources";
-    public static final String FILE_PATH_LOCAL_IMAGE = "http://localhost:8080/resources/uploads/";
+    public static final String FILE_PATH_LOCAL_IMAGE = "http://localhost:8080/image/upload/";
 
 }

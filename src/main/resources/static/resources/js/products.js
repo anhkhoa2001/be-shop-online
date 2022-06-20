@@ -24,7 +24,7 @@ fetch(linkAPI + "/get-by?count=-100&type=abc", {
 }).then(data => {
     countProduct = data.length;
 	document.querySelector("#main .products").innerHTML = updateProduct(data);
-	document.querySelector("#main .menu-input-max").innerHTML = 'The highest price is ' + getMaxPrice(data).priceDola + '$';
+	/*document.querySelector("#main .menu-input-max").innerHTML = 'The highest price is ' + getMaxPrice(data).price + '$';*/
 });
 
 function getMaxPrice(data) {

@@ -3,7 +3,7 @@ package com.spring.modules.product.facades.impls;
 import com.spring.core.facades.converter.dto2model.ADTO2ModelConverter;
 import com.spring.core.facades.converter.model2dto.AModel2DTOConverter;
 import com.spring.core.facades.impls.ATypeManagementFacade;
-import com.spring.core.response.EResponse;
+import com.spring.core.constain.FixedValue;
 import com.spring.modules.product.controllers.dto.LaptopDTO;
 import com.spring.modules.product.models.LaptopModel;
 import com.spring.modules.product.services.LaptopService;
@@ -51,9 +51,9 @@ public class LaptopFacade extends ATypeManagementFacade<LaptopDTO, LaptopModel, 
 
             return getModel2dto().convertAll(laptops.subList(0, count));
         } else {
-            if(laptops.size() > EResponse.COUNT_PRODUCT_LOAD) {
+            if(laptops.size() > FixedValue.COUNT_PRODUCT_LOAD) {
                 model.addAttribute("loadmore", true);
-                return getModel2dto().convertAll(laptops.subList(0, EResponse.COUNT_PRODUCT_LOAD));
+                return getModel2dto().convertAll(laptops.subList(0, FixedValue.COUNT_PRODUCT_LOAD));
             } else {
                 return getModel2dto().convertAll(laptops);
             }

@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/manu")
-public class ManufacturerController extends ATypeManagementRestController<ManufacturerDTO, ManufacturerModel,
+public class ManufacturerRestController extends ATypeManagementRestController<ManufacturerDTO, ManufacturerModel,
                                             ManufacturerService, ManufacturerFacade> {
 
-    protected ManufacturerController(final ManufacturerFacade facade) {
+    protected ManufacturerRestController(final ManufacturerFacade facade) {
         super(facade);
     }
 

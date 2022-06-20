@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/product-line")
-public class ProductLineController extends ATypeManagementRestController<ProductLineDTO, ProductLineModel,
+public class ProductLineRestController extends ATypeManagementRestController<ProductLineDTO, ProductLineModel,
                                     ProductLineService, ProductLineFacade> {
 
-    protected ProductLineController(final ProductLineFacade facade) {
+    protected ProductLineRestController(final ProductLineFacade facade) {
             super(facade);
         }
 }

@@ -4,9 +4,7 @@ import com.spring.core.controller.dto.AItemDTO;
 import com.spring.core.facades.converter.dto2model.ADTO2ModelConverter;
 import com.spring.core.facades.converter.model2dto.AModel2DTOConverter;
 import com.spring.core.model.AItemModel;
-import com.spring.core.response.EResponse;
 import com.spring.core.service.ATypeManagementService;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
@@ -78,13 +76,11 @@ public class ATypeManagementFacade<DTO extends AItemDTO, MODEL extends AItemMode
         return null;
     }
 
-    public int deleteById(long id) {
+    public void deleteById(long id) {
         try {
             getService().deleteById(id);
-            return EResponse.SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
-            return EResponse.FAILED;
         }
     }
 

@@ -25,13 +25,13 @@
             <div class="page__title-container">
                 <ul class="page__titles">
                     <li>
-                        <a href="/myspring">
+                        <a href="/home">
                             <svg>
                                 <use xlink:href="../resources/images/sprite.svg#icon-home" ></use>
                             </svg>
                         </a>
                     </li>
-                    <li class="page__title">iPhone 11</li>
+                    <li class="page__title" th:text = "${product.name }"></li>
                 </ul>
             </div>
         </div>
@@ -302,7 +302,6 @@
     });
 
     const code = params.code;
-    const username =  '[[${dto.username}]]';
 </script>
 <script src="../resources/js/productdetails.js" ></script>
 </body>

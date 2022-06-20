@@ -22,14 +22,14 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/customer")
-public class CustomerController extends ATypeManagementRestController<CustomerDTO, CustomerModel, CustomerService, CustomerFacade> {
+public class CustomerRestController extends ATypeManagementRestController<CustomerDTO, CustomerModel, CustomerService, CustomerFacade> {
 
-    protected CustomerController(final CustomerFacade facade) {
+    protected CustomerRestController(final CustomerFacade facade) {
         super(facade);
     }
 
     @Override
-    public CustomerDTO create(@Parameter(in = ParameterIn.DEFAULT,required = true) @RequestBody CustomerDTO entity) {
+    public ResponseEntity<CustomerDTO> create(@Parameter(in = ParameterIn.DEFAULT,required = true) @RequestBody CustomerDTO entity) {
         if(Objects.nonNull(entity)) {
             if(StringUtils.isBlank(entity.getCode())) {
                 entity.setCode(getFacade().generatorCode(CustomerModel.MODEL_NAME));
@@ -42,10 +42,10 @@ public class CustomerController extends ATypeManagementRestController<CustomerDT
 
             CustomerDTO dtoCreated = getFacade().create(entity);
 
-            return dtoCreated;
+            return new ResponseEntity<>(dtoCreated, HttpStatus.OK);
         }
 
-        return null;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/get-logged")

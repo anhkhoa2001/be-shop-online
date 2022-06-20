@@ -1,11 +1,8 @@
 package com.spring.modules.checkout.controllers.rest;
 
 import com.spring.core.controller.rest.ATypeManagementRestController;
-import com.spring.core.response.EResponse;
-import com.spring.modules.authentication.config.AuthenticationSystem;
-import com.spring.modules.authentication.controllers.dtos.CustomerDTO;
+import com.spring.core.constain.FixedValue;
 import com.spring.modules.authentication.facades.imps.CustomerFacade;
-import com.spring.modules.category.controller.dtos.CategoryDTO;
 import com.spring.modules.category.facades.imps.CategoryFacade;
 import com.spring.modules.category.model.CategoryModel;
 import com.spring.modules.category.service.CategoryService;
@@ -24,16 +21,14 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/orders")
-public class OrderController extends ATypeManagementRestController<OrderDTO, OrderModel, OrderService, OrderFacade> {
+public class OrderRestController extends ATypeManagementRestController<OrderDTO, OrderModel, OrderService, OrderFacade> {
 
     private final CustomerFacade customerFacade;
     private final OrderProductFacade orderProductFacade;
@@ -42,27 +37,13 @@ public class OrderController extends ATypeManagementRestController<OrderDTO, Ord
     private final OrderProductService orderProductService;
 
     @Autowired
-    protected OrderController(final OrderFacade facade, final CustomerFacade customerFacade, final OrderProductFacade orderProductFacade, final CategoryFacade categoryFacade, final CategoryService categoryService, final OrderProductService orderProductService) {
+    protected OrderRestController(final OrderFacade facade, final CustomerFacade customerFacade, final OrderProductFacade orderProductFacade, final CategoryFacade categoryFacade, final CategoryService categoryService, final OrderProductService orderProductService) {
         super(facade);
         this.customerFacade = customerFacade;
         this.orderProductFacade = orderProductFacade;
         this.categoryFacade = categoryFacade;
         this.categoryService = categoryService;
         this.orderProductService = orderProductService;
-    }
-
-    @GetMapping(value = "/add-to-cart")
-    @ResponseBody
-    public int home(Model model, @RequestParam String code) {
-        model.addAttribute("isLog", AuthenticationSystem.isLogged());
-        String username = AuthenticationSystem.getUsernameCurrent();
-
-        CustomerDTO customerDTO = getCustomerFacade().getByUsername(username);
-        if(Objects.nonNull(customerDTO)) {
-            model.addAttribute("dto", customerDTO);
-        }
-
-        return AuthenticationSystem.isLogged() ? EResponse.SUCCESS : EResponse.FAILED;
     }
 
     @PostMapping(value = "/check-out")
@@ -86,7 +67,7 @@ public class OrderController extends ATypeManagementRestController<OrderDTO, Ord
             String city = one.get("city").toString();
 
             OrderDTO orderDTOCreate = new OrderDTO(firstname + " " + lastname, email, phone, residence + " " + district + " " + city,
-                    0, EResponse.day.format(EResponse.localDate), 0);
+                    0, FixedValue.day.format(FixedValue.localDate), 0);
 
             int totalQuantity = ((Long) three.get("quantity")).intValue();
             int totalPrice = ((Long) three.get("total")).intValue();
